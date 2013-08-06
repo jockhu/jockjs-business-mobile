@@ -15,15 +15,16 @@ J.add('touch');
 (function(w){
     var T = {
             PAGES:{},
+            FN:{},
+            Resources:{},
             locked:false
-        }, HISTORY = {}, D = document,
+        }, D = document,
         pageView = {
             width:0,
             height:0
         },
         isFistLoaded = true,
         currentPageName = '',
-        loadTimer = null,
         resource = {},
         isSupportHistory = false,
         enableTransition = true;
@@ -52,48 +53,38 @@ J.add('touch');
      */
     function History(){
 
-        function updateHistory(options){
-            var key = options.key || md5(D.location.href);
-            HISTORY[key] = J.mix(options, {key:key}, true);
-        }
-
         function pushHistory(opts){
             var info = {
                 title : opts.title || D.title,
-                url : opts.url
+                url : opts.url,
+                pageName : opts.pageName
             };
-            if(isSupportHistory){
+            if(history.pushState){
                 history.pushState(info, info.title, info.url);
-                updateHistory(opts);
             }
+
         }
 
         function replaceHistory(opts){
-            var parent, ops;
-            if(parent = opts.parent){
-                ops = T.PAGES[parent].getOptions();
-                var info = {
-                    title : ops.title || D.title,
-                    url : ops.url
-                };
-                if(isSupportHistory){
-                    history.replaceState(info, info.title, info.url);
-                    updateHistory(ops);
-                }
+            var info = {
+                title : opts.title || D.title,
+                url : opts.url,
+                pageName : opts.pageName
+            };
+            if(history.replaceState){
+                history.replaceState(info, info.title, info.url);
             }
         }
 
         w.onpopstate = function(event){
             enableTransition = false;
-            var key = md5(D.location.href),
-                ops = HISTORY[key], currentPage, cubPage;
-
+            var pn, currentPage, cubPage;
+            event.state&&(pn=event.state.pageName);
             //跳过第一次处理
             if(!isFistLoaded){
                 // 清除正在加载资源任务
-                loadTimer && clearTimeout(loadTimer);
-                if(ops && ops.pageName != currentPageName){
-                    currentPage = T.PAGES[ops.pageName];
+                if(pn && pn != currentPageName && T.PAGES[pn]){
+                    currentPage = T.PAGES[pn];
                     //console.log('---',currentPage.getOptions(), ops.pageName, currentPage.getSubPage(),'---')
                     if(cubPage = currentPage.getSubPage()){
                         // 如果有子Page，直接隐藏子Page
@@ -114,7 +105,6 @@ J.add('touch');
         }
 
         return {
-            update:updateHistory,
             push:pushHistory,
             replace:replaceHistory
         };
@@ -326,6 +316,7 @@ J.add('touch');
                 }
 
             }else{
+                load();
                 setContent(getLoadingHtml());
                 // 更新当前 PageSize
                 resetSize();
@@ -338,7 +329,7 @@ J.add('touch');
                 }
 
                 transition(0, null, null, function(){
-                    load();
+
                 });
             }
 
@@ -362,10 +353,6 @@ J.add('touch');
 
             T.locked = true;
 
-            // 前进 后退 不需要重复更新 history
-            if(!stepHistory) hs.replace(opts);
-
-
             parentPage.setSubPage(null);
             if(opts.type == 'box'){
                 boxContainer.hide();
@@ -383,8 +370,8 @@ J.add('touch');
                     T.locked = false;
                     unActBack();
                 });
-                currentPageName = parentPage.getPageName();
             }
+            currentPageName = parentPage.getPageName();
             D.title = parentPage.getOptions().title;
             opts.onHide && opts.onHide(M);
             //console.log('  hide',opts.type, currentPageName)
@@ -406,38 +393,9 @@ J.add('touch');
             return T.PAGES[pageName];
         }
 
-        /*function loadHTML(){
-         loadTimer = setTimeout(function(){
-         J.get({
-         url: opts.url,
-         type: 'json',
-         headers: {
-         'X-TW-HAR': 'HTML'
-         },
-         onSuccess: function(rs) {
-         // 如果请求结果未返回，而页面已经被切换，跳出处理逻辑
-         if(opts.pageName != currentPageName) return;
-         resourceLoaded = true;
-         setContent(rs.html);
-         T.locked = false;
-         T.PAGES[opts.pageName].init(M);
-         opts.onShow && opts.onShow(M);
-         }
-         });
-         },0);
-
-         // new page init
-         function newPageInit(){
-         T.locked = false;
-         T.PAGES[opts.pageName].init(M);
-         opts.onShow && opts.onShow(M);
-         }
-         }*/
-
         function load(){
             var BS,PS,CL,PL;
             BS=PS=+new Date();
-            loadTimer = setTimeout(function(){
                 J.get({
                     url: opts.url,
                     cache: false,
@@ -471,7 +429,13 @@ J.add('touch');
                                     CL=PL=+new Date();
                                     opts.trackSpeedName=w.PAGENAME;
                                     trackSpeedAjax(BS,PS,CL,PL,1,opts.trackSpeedName);
+                                    T.FN[opts.pageName]&&T.FN[opts.pageName]();
                                     newPageInit();
+
+                                    //preload css & js
+
+                                    preLoad(rs["pre-css"],"css");
+                                    preLoad(rs["pre-js"],"js");
                                     return false;
                                 }
                                 timer = setTimeout(arguments.callee,10);
@@ -487,7 +451,6 @@ J.add('touch');
                         }
                     }
                 });
-            },0);
 
             // new page init
             function newPageInit(){
@@ -508,21 +471,22 @@ J.add('touch');
             var l = resArr.length;
             if(!l) callback && callback();
             J.each(resArr, function(i, v){
+                var key = md5(v);
                 if(type == 'css'){
-                    /*J.get({
-                        type:'jsonp',
-                        url:v,
-                        onSuccess:function(cssText){
-                            J.rules(cssText);
-                            callback && callBackFn(callback)
-                        }
-                    });*/
-                    J.load(v, type);
+                    if(!T.Resources[key]){
+                        J.load(v, type);
+                        T.Resources[key] = true;
+                    }
                     callback && callBackFn(callback);
                 }else{
-                    J.load(v, type, function(){
-                        callback && callBackFn(callback)
-                    });
+                    if(!T.Resources[key]){
+                        J.load(v, type, function(){
+                            T.Resources[key] = true;
+                            callback && callBackFn(callback);
+                        });
+                    }else{
+                        callback && callBackFn(callback);
+                    }
                 }
             });
 
@@ -651,14 +615,49 @@ J.add('touch');
         }else{
             iOpts.title = D.title;
             var opts = J.mix(defOptions, iOpts, true);
-            hs.update(opts);
+            hs.replace(opts);
             page = T.PAGES[iOpts.pageName] = new Page(opts, stepHistory, overLocked);
             onPageResize(function(size){
                 T.PAGES[currentPageName].resetSize(size);
             });
             initialize(page);
+            
+            //preload js & css
+            w.addEventListener('load',function(){
+
+                //css & js that loaded
+                var CJload=J.g('cssAndJsLoaded').val();
+                CJload&&(CJload=CJload.split(','));
+                CJload&&(J.each(CJload,function(i,v){
+                    T.Resources[md5(v)]=true;
+                }));
+                //preload css
+                var cssPres=J.g('cssPreload').val();
+                cssPres&&(cssPres=cssPres.split(','));
+                cssPres&&preLoad(cssPres,'css');
+                //preload js
+                var jsPres=J.g('jsPreload').val();
+                jsPres&&(jsPres=jsPres.split(','));
+                jsPres&&preLoad(jsPres,'js');
+            });
         }
 
+    }
+
+    function preLoad(resArr,type){
+        J.each(resArr,function(i,v){
+            var key=md5(v);
+            if(!T.Resources[key]){
+                if(type=="css"){
+                    J.load(v, type);
+                    T.Resources[key]=true;
+                }else{
+                    J.load(v, type, function(){
+                        T.Resources[key]=true;
+                    });
+                }
+            }
+        });
     }
 
 
@@ -708,8 +707,9 @@ J.add('touch');
      */
     function pageReadySize(callback){
         var width = pageView.width, height = pageView.height, timer = null, count = 50;
+        
         (function(){
-            if( width != J.page.viewWidth() || height != J.page.viewHeight() ){
+            if( width != J.page.viewWidth() || height != J.page.viewHeight() || count==1 ){
                 timer && clearTimeout(timer);
                 pageView.width = width = J.page.viewWidth();
                 pageView.height = height = J.page.viewHeight();
@@ -731,11 +731,16 @@ J.add('touch');
      */
     function onPageResize(callback) {
         w.addEventListener('resize', function() {
-            /*var t = D.activeElement.tagName;
-             if (t == 'INPUT' || t=='TEXTAREA')return;*/
+            var t = D.activeElement.tagName;
+            if (t == 'INPUT' || t=='TEXTAREA')return;
             pageReadySize(callback);
         }, false);
         w.addEventListener('load',function(){
+            pageReadySize(callback);
+        });
+        w.addEventListener('orientationchange',function(){
+            var t = D.activeElement.tagName;
+            if (t != 'INPUT' && t!='TEXTAREA')return;
             pageReadySize(callback);
         });
     }
@@ -812,7 +817,7 @@ J.add('touch');
     }
 
     function setCookie(name,value){
-        var url = J.site.info.dev ? 'http://service.dev.aifang.com/cookie/set/guid/' : 'http://service.a.aifang.com/cookie/set/guid/', img;
+        var url = J.site.info.dev ? 'http://service.dev.aifang.com/cookie/add/guid/' : 'http://api.anjuke.com/common/cookie/add/guid/', img;
         url += J.getCookie(J.site.cookies.guid);
         url += '?' + name + "=" + value;
         img = new Image();
