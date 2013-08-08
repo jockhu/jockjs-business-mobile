@@ -100,6 +100,7 @@ J.add('touch');
                 isSupportHistory = true;
                 isFistLoaded = false;
                 enableTransition = true;
+                preLoadWhenLoaded();
             }
 
         }
@@ -621,27 +622,25 @@ J.add('touch');
                 T.PAGES[currentPageName].resetSize(size);
             });
             initialize(page);
-            
-            //preload js & css
-            w.addEventListener('load',function(){
-
-                //css & js that loaded
-                var CJload=J.g('cssAndJsLoaded').val();
-                CJload&&(CJload=CJload.split(','));
-                CJload&&(J.each(CJload,function(i,v){
-                    T.Resources[md5(v)]=true;
-                }));
-                //preload css
-                var cssPres=J.g('cssPreload').val();
-                cssPres&&(cssPres=cssPres.split(','));
-                cssPres&&preLoad(cssPres,'css');
-                //preload js
-                var jsPres=J.g('jsPreload').val();
-                jsPres&&(jsPres=jsPres.split(','));
-                jsPres&&preLoad(jsPres,'js');
-            });
         }
 
+    }
+
+    function preLoadWhenLoaded() {
+        //css & js that loaded
+        var CJload = J.g('cssAndJsLoaded').val();
+        CJload && (CJload = CJload.split(','));
+        CJload && (J.each(CJload, function(i, v) {
+            T.Resources[md5(v)] = true;
+        }));
+        //preload css
+        var cssPres = J.g('cssPreload').val();
+        cssPres && (cssPres = cssPres.split(','));
+        cssPres && preLoad(cssPres, 'css');
+        //preload js
+        var jsPres = J.g('jsPreload').val();
+        jsPres && (jsPres = jsPres.split(','));
+        jsPres && preLoad(jsPres, 'js');
     }
 
     function preLoad(resArr,type){
@@ -817,7 +816,7 @@ J.add('touch');
     }
 
     function setCookie(name,value){
-        var url = J.site.info.dev ? 'http://service.dev.aifang.com/cookie/add/guid/' : 'http://api.anjuke.com/common/cookie/add/guid/', img;
+        var url = 'http://api.anjuke.com/common/cookie/add/guid/', img;
         url += J.getCookie(J.site.cookies.guid);
         url += '?' + name + "=" + value;
         img = new Image();
