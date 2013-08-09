@@ -846,7 +846,6 @@ J.add('touch');
             var y = -o.iScroll.y + o.iScroll.wrapperH + that.offsetY;
             ele.s('img').each(function(i,v){
                 if( v.offset().y < y){
-                    console.log(y);
                     if(!v.attr('data-src'))return;
                     replaceImg(v);
                     return;
@@ -882,7 +881,7 @@ J.add('touch');
             var y = -this.y + this.wrapperH + that.offsetY;
             for (var i =  0; i < img.length; i++) {
                 var v = img[0];
-                if(v.offset().y < y ){
+                if( v.offset().y && v.offset().y < y ){
                     replaceImg(v);
                     img.shift();
                 }else{
