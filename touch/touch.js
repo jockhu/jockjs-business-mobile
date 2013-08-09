@@ -148,9 +148,11 @@ J.add('touch');
             parentPage,
             subPage,
             iScrollObj = null,
+            pageLocked = false,
             containerID = ('TW_' + Math.random()).replace(/\./,'')+(++identityIndex);
 
         var M = {
+            isLocked:isLocked,
             addItemClick:addItemClick,
             setSubPage:setSubPage,
             getSubPage:getSubPage,
@@ -196,6 +198,10 @@ J.add('touch');
             }
         })();
 
+        function isLocked(){
+            return pageLocked;
+        }
+
         function getPageContainer(){
             return pageContainer;
         }
@@ -219,6 +225,7 @@ J.add('touch');
         }
 
         function add(){
+            pageLocked = true;
             if(opts.type == 'box'){
                 boxContainer = J.create('div');
                 opts.header && (boxHeader = J.create('div').html(opts.header).appendTo(boxContainer));
@@ -287,6 +294,7 @@ J.add('touch');
          * @param overLocked 哪怕是锁定的也执行
          */
         function show(stepHistory, overLocked){
+            pageLocked = true;
             //console.log('show', opts,currentPageName)
             if(!overLocked){
                 if(T.locked) return;
@@ -459,6 +467,7 @@ J.add('touch');
                 T.PAGES[opts.pageName].init(M);
                 opts.onShow && opts.onShow(M);
                 D.title = opts.title;
+                pageLocked = false;
             }
         }
 
@@ -837,6 +846,7 @@ J.add('touch');
             var y = -o.iScroll.y + o.iScroll.wrapperH + that.offsetY;
             ele.s('img').each(function(i,v){
                 if( v.offset().y < y){
+                    console.log(y);
                     if(!v.attr('data-src'))return;
                     replaceImg(v);
                     return;
