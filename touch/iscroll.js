@@ -6,9 +6,7 @@
 (function(){
 var m = Math,
 	mround = function (r) { return r >> 0; },
-	vendor = (/webkit/i).test(navigator.appVersion) ? 'webkit' :
-		(/firefox/i).test(navigator.userAgent) ? 'Moz' :
-		'opera' in window ? 'O' : '',
+	vendor = 'webkit',
 
     // Browser capabilities
     isAndroid = (/android/gi).test(navigator.appVersion),
@@ -110,7 +108,7 @@ var m = Math,
 		if (that.options.useTransition) that.scroller.style[vendor + 'TransitionTimingFunction'] = 'cubic-bezier(0.33,0.66,0.66,1)';
 		
 		if (that.options.useTransform) that.scroller.style[vendor + 'Transform'] = trnOpen + that.x + 'px,' + that.y + 'px' + trnClose;
-		else that.scroller.style.cssText += ';position:absolute;width:100%;top:' + that.y + 'px;left:' + that.x + 'px';
+		else that.scroller.style.cssText += ';position:absolute;top:' + that.y + 'px;left:' + that.x + 'px';
 
 		that.refresh();
 
@@ -162,7 +160,6 @@ iScroll.prototype = {
 
 		if (this.options.useTransform) {
 			this.scroller.style[vendor + 'Transform'] = trnOpen + x + 'px,' + y + 'px' + trnClose + ' scale(' + this.scale + ')';
-			if (this.options.onPos) this.options.onPos.call(this);
 		} else {
 			x = mround(x);
 			y = mround(y);
@@ -172,6 +169,8 @@ iScroll.prototype = {
 
 		this.x = x;
 		this.y = y;
+
+		if (this.options.onPos) this.options.onPos.call(this);
 
 		if (this.options.lazyOnpos) this.options.lazyOnpos.call(this);
 	},
