@@ -144,7 +144,7 @@ J.add('touch');
             boxHeader,
             boxContent,
             boxFooter,
-            resourceLoaded = false,
+            resourceLoaded = options.resourceLoaded||false,
             parentPage,
             subPage,
             iScrollObj = null,
@@ -625,6 +625,7 @@ J.add('touch');
         }else{
             iOpts.title = D.title;
             var opts = J.mix(defOptions, iOpts, true);
+            opts.resourceLoaded = true;
             hs.replace(opts);
             page = T.PAGES[iOpts.pageName] = new Page(opts, stepHistory, overLocked);
             onPageResize(function(size){

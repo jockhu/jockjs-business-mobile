@@ -353,7 +353,7 @@
 
         site.info.ctid = cityId || getCookie(ckCity);
         p.cityAlias && (site.info.cityAlias = p.cityAlias);
-
+        p.includePrefix && (site.info.includePrefix = p.includePrefix);
 
     };
 })();
