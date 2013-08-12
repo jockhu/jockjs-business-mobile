@@ -110,7 +110,7 @@ var m = Math,
 		if (that.options.useTransition) that.scroller.style[vendor + 'TransitionTimingFunction'] = 'cubic-bezier(0.33,0.66,0.66,1)';
 		
 		if (that.options.useTransform) that.scroller.style[vendor + 'Transform'] = trnOpen + that.x + 'px,' + that.y + 'px' + trnClose;
-		else that.scroller.style.cssText += ';position:absolute;top:' + that.y + 'px;left:' + that.x + 'px';
+		else that.scroller.style.cssText += ';position:absolute;width:100%;top:' + that.y + 'px;left:' + that.x + 'px';
 
 		that.refresh();
 
