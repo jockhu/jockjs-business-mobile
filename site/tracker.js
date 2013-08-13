@@ -125,7 +125,7 @@
                 luid:getCookie(o.nLiu || 'lui') || '',
                 ssid:getCookie(o.nSessid || siteCookies.ssid) || '',
                 uid:u || getCookie(o.nUid || siteCookies.said) || '0',
-                t:siteInfo.time
+                t:+new Date()
             };
             o.method && (ret.m = o.method);
             (o.cst && /[0-9]{13}/.test(o.cst)) && (ret.lt = ret.t - parseInt(o.cst));
