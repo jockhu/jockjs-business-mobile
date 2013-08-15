@@ -339,7 +339,7 @@
         site.info.version = p.page_version || '';
 
         function vCookie(){
-            getCookie(ckGuid) || (site.info.isNew = 1, setCookie(ckGuid, createGuid(), expire, baseDomain));
+            (site.fixGUID = getCookie(ckGuid)) || (site.info.isNew = 1, setCookie(ckGuid, site.fixGUID = createGuid(), expire, baseDomain));
         }
 
         if(getCookie(ckSession)){
