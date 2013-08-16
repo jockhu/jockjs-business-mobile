@@ -404,7 +404,9 @@ J.add('touch');
 
         function load(){
             var BS,PS,CL,PL;
-            BS=PS=+new Date();
+            BS=PS=+new Date(),li=0;
+            function l(){
+                li++;
                 J.get({
                     url: opts.url,
                     cache: false,
@@ -458,8 +460,26 @@ J.add('touch');
                             trackSpeedAjax(BS,PS,CL,PL,2,opts.trackSpeedName);
                             newPageInit()
                         }
+                    },
+                    onFailure: function(xhr){
+                        trackTs('?tp=ajax_failure&msg='+xhr.status+'&url='+encodeURIComponent(opts.url)+'&times='+li);
+                        failure(li);
+                    },
+                    onTimeout:function(xhr){
+                        trackTs('?tp=ajax_timeout&url='+encodeURIComponent(opts.url)+'&times='+li);
+                        failure(li);
                     }
                 });
+            }
+            l();
+            function failure(li) {
+                if (li < 5) {
+                    setContent(getRetryHtml());
+                    l();
+                } else {
+                    setContent(getFailureHtml());
+                }
+            }
 
             // new page init
             function newPageInit(){
@@ -560,11 +580,22 @@ J.add('touch');
 
     }
 
-
-    function getLoadingHtml(){
+    function getHtml(msg){
         var h = J.page.viewHeight() / 2 - 150;
         h = h < 50 ? 50 : h;
-        return '<div class="pload" style="margin:'+h+'px auto 0;"><div class="ic" style="width:120px; height:110px; margin: 0 auto;"></div><div class="co">正在努力加载中...</div></div>'
+        return '<div class="pload" style="margin:'+h+'px auto 0;"><div class="ic" style="width:120px; height:110px; margin: 0 auto;"></div><div class="co">'+msg+'</div></div>';
+    }
+
+    function getLoadingHtml(){
+        return getHtml('正在努力加载中...');
+    }
+
+    function getFailureHtml(){
+        return getHtml('加载失败，请试试刷新页面...');
+    }
+
+    function getRetryHtml(){
+        return getHtml('网速不给力，尝试重新加载中...');
     }
 
 
@@ -797,32 +828,36 @@ J.add('touch');
         D.location.href = url;
     }
 
+    function trackTs(u){
+        var img = new Image(),url = J.site.info.dev ? 'http://touch.fang.anjuke.test/ts.html' : 'http://m.anjuke.com/ts.html';
+        url+=u;
+        img.src = url;
+    }
+
     function trackSpeed(){
         w.addEventListener && w.addEventListener('load',function(){
-            var url = J.site.info.dev ? 'http://touch.fang.anjuke.test/ts.html' : 'http://m.anjuke.com/ts.html', tm = J.times, img;
-            url += '?pn='+ w.PAGENAME;
+            var tm = J.times,url;
+            url = '?pn='+ w.PAGENAME;
             url += '&in='+ J.site.info.isNew;
             url += '&PS='+ tm.PS;
             url += '&BS='+ tm.BS;
             url += '&CL='+ tm.CL;
             url += '&PL='+ tm.PL;
             url += '&as=0';
-            img = new Image();
-            img.src = url;
+            trackTs(url);
         });
     }
 
     function trackSpeedAjax(BS,PS,CL,PL,as,pn){
-        var url = J.site.info.dev ? 'http://touch.fang.anjuke.test/ts.html' : 'http://m.anjuke.com/ts.html', img;
-        url += '?pn='+ pn;
+        var url;
+        url = '?pn='+ pn;
         url += '&in='+ J.site.info.isNew;
         url += '&PS='+ PS;
         url += '&BS='+ BS;
         url += '&CL='+ CL;
         url += '&PL='+ PL;
         url += '&as='+ as;
-        img = new Image();
-        img.src = url;
+        trackTs(url);
     }
 
     function setCookie(name,value){
