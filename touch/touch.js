@@ -438,9 +438,9 @@ J.add('touch');
                                 if(cssLoaded && jsLoaded){
                                     timer && clearTimeout(timer);
                                     CL=PL=+new Date();
+                                    T.FN[opts.pageName]&&T.FN[opts.pageName]();
                                     opts.trackSpeedName=w.PAGENAME;
                                     trackSpeedAjax(BS,PS,CL,PL,1,opts.trackSpeedName);
-                                    T.FN[opts.pageName]&&T.FN[opts.pageName]();
                                     newPageInit();
 
                                     //preload css & js
