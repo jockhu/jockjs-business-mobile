@@ -462,11 +462,11 @@ J.add('touch');
                         }
                     },
                     onFailure: function(xhr){
-                        trackTs('?tp=ajax_failure&msg='+xhr.status+'&url='+encodeURIComponent(opts.url)+'&times='+li);
+                        trackTs('?tp=getJCHTML_failure&msg='+xhr.status+'&url='+encodeURIComponent(opts.url)+'&times='+li);
                         failure(li);
                     },
                     onTimeout:function(xhr){
-                        trackTs('?tp=ajax_timeout&url='+encodeURIComponent(opts.url)+'&times='+li);
+                        trackTs('?tp=getJCHTML_timeout&url='+encodeURIComponent(opts.url)+'&times='+li);
                         failure(li);
                     }
                 });
