@@ -595,7 +595,7 @@ J.add('touch');
     }
 
     function getRetryHtml(){
-        return getHtml('网速不给力，尝试重新加载中...');
+        return getHtml('网速不给力，正在重新加载...');
     }
 
 
