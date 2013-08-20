@@ -403,8 +403,8 @@ J.add('touch');
         }
 
         function load(){
-            var BS,PS,CL,PL;
-            BS=PS=+new Date(),li=0;
+            var BS,PS,CL,PL,li=0;
+            BS=PS=+new Date();
             function v(){
                 return ((location.href.indexOf(opts.url) == -1)||(!M.getPageContainer().s('.pload').length))? true:false;
             }
