@@ -414,7 +414,7 @@ J.add('touch');
                     url: opts.url,
                     cache: false,
                     type: 'json',
-                    timeout: 5000,
+                    timeout: 15000,
                     headers: {
                         'X-TW-HAR': 'JCHTML'
                     },
@@ -466,18 +466,18 @@ J.add('touch');
                     },
                     onFailure: function(xhr){
                         trackTs('?tp=getJCHTML_failure&msg='+xhr.status+'&url='+encodeURIComponent(opts.url)+'&times='+li);
-                        failure(li);
+                        failure(li,true);
                     },
                     onTimeout:function(xhr){
                         trackTs('?tp=getJCHTML_timeout&url='+encodeURIComponent(opts.url)+'&times='+li);
-                        failure(li);
+                        failure(li,false);
                     }
                 });
             }
             l();
-            function failure(li) {
+            function failure(li,f) {
                 if(v()) return;
-                if (li < 5) {
+                if ( (li < 3)&&!f ) {
                     setContent(getRetryHtml());
                     l();
                 } else {
