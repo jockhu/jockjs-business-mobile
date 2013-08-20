@@ -406,7 +406,7 @@ J.add('touch');
             var BS,PS,CL,PL,li=0,ti=(+new Date());
             BS=PS=+new Date();
             function v(){
-                return ((location.href.indexOf(opts.url) == -1)||(!M.getPageContainer().s('.pload').length))? true:false;
+                return ((decodeURIComponent(location.href).indexOf(opts.url) == -1)||(!M.getPageContainer().s('.pload').length))? true:false;
             }
             function l(){
                 li++;
