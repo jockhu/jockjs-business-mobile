@@ -296,11 +296,11 @@ J.add('touch');
         function show(stepHistory, overLocked){
             pageLocked = true;
             //console.log('show', opts,currentPageName)
-            if(!overLocked){
-                if(T.locked) return;
-            }
+            // if(!overLocked){
+            //     if(T.locked) return;
+            // }
             opts.onShowBefore && opts.onShowBefore(M);
-            T.locked = true;
+            // T.locked = true;
             onActBack();
 
             currentPageName = opts.pageName
@@ -320,7 +320,7 @@ J.add('touch');
                     load();
                 }else{
                     D.title = opts.title;
-                    T.locked = false;
+                    // T.locked = false;
                     opts.onShow && opts.onShow(M);
                 }
 
@@ -355,12 +355,12 @@ J.add('touch');
          */
         function hide(stepHistory, overLocked){
             //console.log('hide', parentPage.getPageName(), opts.type, currentPageName)
-            if(!overLocked){
-                if(T.locked) return;
-            }
+            // if(!overLocked){
+            //     if(T.locked) return;
+            // }
             opts.onHideBefore && opts.onHideBefore(M);
 
-            T.locked = true;
+            // T.locked = true;
 
             parentPage.setSubPage(null);
             if(opts.type == 'box'){
@@ -368,7 +368,7 @@ J.add('touch');
                 parentPage.getBoxContainer().show();
                 parentPage.getOptions().onShowBefore && parentPage.getOptions().onShowBefore(parentPage);
 
-                T.locked = false;
+                // T.locked = false;
             }else{
                 parentPage.resetSize();
                 transition(1, null, null, function(){
@@ -376,7 +376,7 @@ J.add('touch');
                 });
                 parentPage.setVisible(true);
                 parentPage.transition(0,null,null,function(){
-                    T.locked = false;
+                    // T.locked = false;
                     unActBack();
                 });
             }
@@ -403,21 +403,30 @@ J.add('touch');
         }
 
         function load(){
-            var BS,PS,CL,PL;
-            BS=PS=+new Date(),li=0;
+            var BS,PS,CL,PL,li=0,ti=(+new Date());
+            BS=PS=+new Date();
+            function v(){
+                return ((decodeURIComponent(location.href).indexOf(opts.url) == -1)||(!M.getPageContainer().s('.pload').length))? true:false;
+            }
             function l(){
                 li++;
                 J.get({
                     url: opts.url,
                     cache: false,
                     type: 'json',
+                    timeout: 15000,
                     headers: {
                         'X-TW-HAR': 'JCHTML'
                     },
                     onSuccess: function(rs) {
                         // 如果请求结果未返回，而页面已经被切换，跳出处理逻辑
-
-                        if(opts.pageName != currentPageName) return;
+                        if(v()) return;
+                        //view ppc
+                        //以后删除
+                        if(opts.pageName=="prop_view"){
+                            opts.url+=(((opts.url.indexOf('?')!=-1)?"&J=":"?J=")+ti+'-'+li);
+                            hs.replace(opts);
+                        }
                         var cssLoaded = false, jsLoaded = false, timer;
                         // 如果资源没有被加载过
                         if(!resourceLoaded){
@@ -463,17 +472,18 @@ J.add('touch');
                     },
                     onFailure: function(xhr){
                         trackTs('?tp=getJCHTML_failure&msg='+xhr.status+'&url='+encodeURIComponent(opts.url)+'&times='+li);
-                        failure(li);
+                        failure(li,true);
                     },
                     onTimeout:function(xhr){
                         trackTs('?tp=getJCHTML_timeout&url='+encodeURIComponent(opts.url)+'&times='+li);
-                        failure(li);
+                        failure(li,false);
                     }
                 });
             }
             l();
-            function failure(li) {
-                if (li < 5) {
+            function failure(li,f) {
+                if(v()) return;
+                if ( (li < 2)&&!f ) {
                     setContent(getRetryHtml());
                     l();
                 } else {
@@ -483,7 +493,7 @@ J.add('touch');
 
             // new page init
             function newPageInit(){
-                T.locked = false;
+                // T.locked = false;
                 T.PAGES[opts.pageName].init(M);
                 opts.onShow && opts.onShow(M);
                 D.title = opts.title;
@@ -708,9 +718,9 @@ J.add('touch');
      * @param overLocked 哪怕是锁定的也执行
      */
     function showPage(options, stepHistory, overLocked){
-        if(!overLocked){
-            if(T.locked) return false;
-        }
+        // if(!overLocked){
+        //     if(T.locked) return false;
+        // }
 
         options.parent = currentPageName;
 
