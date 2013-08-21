@@ -312,6 +312,9 @@ J.add('touch');
             currentPageName = opts.pageName
             parentPage = getParentPage(opts.parent);
 
+            // 前进 后退 不需要重复更新 history
+            if(!stepHistory) hs.push(opts);
+
             if(opts.type == 'box'){
                 var sPage;
                 if(parentPage){
@@ -348,8 +351,7 @@ J.add('touch');
                 });
             }
 
-            // 前进 后退 不需要重复更新 history
-            if(!stepHistory) hs.push(opts);
+
             //console.log('  show', opts.type,currentPageName)
 
         }
@@ -427,7 +429,7 @@ J.add('touch');
                     onSuccess: function(rs) {
                         // 如果请求结果未返回，而页面已经被切换，跳出处理逻辑
                         if(v()) return;
-                        var cssLoaded = false, jsLoaded = false, timer, cFN;
+                        var cssLoaded = false, jsLoaded = false, timer;
                         // 如果资源没有被加载过
                         if(!resourceLoaded){
                             loadResource(rs.css, 'css', function(){
@@ -448,10 +450,7 @@ J.add('touch');
                                     timer && clearTimeout(timer);
                                     CL=PL=+new Date();
 
-                                    if(cFN = T.FN[opts.pageName]){
-                                        J.logger.add(T.FN); //绑定JS错误监控
-                                        cFN();
-                                    }
+                                    T.FN[opts.pageName] && T.FN[opts.pageName]();
 
                                     opts.trackSpeedName=w.PAGENAME;
                                     trackSpeedAjax(BS,PS,CL,PL,1,opts.trackSpeedName);
@@ -827,12 +826,12 @@ J.add('touch');
     }
 
     function track(page, customparam){
-        J.site.eventTracking({site : 'm_anjuke', page : page, customparam:customparam, referrer : T.referrer});
+        J.site.eventTracking({site : 'm_anjuke', page : page, customparam:customparam, referrer : T.referrer, href: D.location.href });
         T.referrer = D.location.href;
     }
 
     function trackEvent(page, customparam){
-        J.site.eventTracking({site : 'm_anjuke-npv', page : page, customparam : customparam});
+        J.site.eventTracking({site : 'm_anjuke-npv', page : page, customparam : customparam, href: D.location.href});
     }
 
     function isSupported(){
