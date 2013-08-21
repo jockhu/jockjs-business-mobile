@@ -9,12 +9,13 @@
  *
  */
 
+/// require('page.page');
 /// require('site.site');
 
 
-(function () {
+(function (J) {
 
-    var site = J.site, siteCookies = site.cookies, siteInfo = site.info, EventTracker;
+    var site = J.site, siteCookies = site.cookies, siteInfo = site.info, EventTracker, JPage = J.page;
 
     // 以下用于页面曝光量统计，以及SOJ A标签处理
     var sojTag = "soj", traceTag = 'data-trace', traceFinished = false, v, d, Arr = [], Ret = {}, l, http = 'http://';
@@ -107,7 +108,7 @@
         p && (o.page = p);
         o.referrer = D.referrer || '';
 
-        J.each('Site Page PageName Referrer Uid Method NGuid NCtid NLiu NSessid NUid Cst CustomParam SendType'.split(' '), function (i, v) {
+        J.each('Site Page PageName Referrer Uid Method NGuid NCtid NLiu NSessid NUid Cst CustomParam SendType Screen Href'.split(' '), function (i, v) {
             var a = v.substring(0, 1).toLowerCase() + v.substring(1);
             m['set' + v] = function (v) {
                 o[a] = v
@@ -117,8 +118,13 @@
         function buildParams() {
             var ret = {
                 p:o.page,
-                h:D.location.href,
+                h:o.href || D.location.href,
                 r:o.referrer || D.referrer || '',
+                sc:o.screen || '{'
+                    + '"w":"'+JPage.width()+'"'
+                    + ',"h":"'+JPage.height()+'"'
+                    + ',"r":"'+(J.W.devicePixelRatio >= 2 ? 1 : 0)+'"'
+                + '}',
                 site:o.site || '',
                 guid:getCookie(o.nGuid || siteCookies.guid) || '',
                 ctid:getCookie(o.nCtid || siteCookies.ctid) || '',
@@ -158,10 +164,11 @@
         EventTracker.setSendType('get');
         EventTracker.setSite(o.site);
         o.page && EventTracker.setPage(o.page);
+        o.href && EventTracker.setHref(o.href);
         o.page && EventTracker.setPageName(o.page);
         o.referrer && EventTracker.setReferrer(o.referrer);
         o.customparam ? EventTracker.setCustomParam(o.customparam) : EventTracker.setCustomParam("");
         EventTracker.track();
     }
 
-})();
+})(J);
