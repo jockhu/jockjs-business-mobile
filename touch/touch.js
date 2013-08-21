@@ -171,6 +171,7 @@ J.add('touch');
             getPageContainer:getPageContainer,
             getBodyContainer:getBodyContainer,
             setContent:setContent,
+            resetContent:resetContent,
             remove:remove
         };
 
@@ -252,6 +253,10 @@ J.add('touch');
 
         function setContent(content){
             boxContent && boxContent.html(content);
+        }
+
+        function resetContent(){
+            setContent(getLoadingHtml());
         }
 
         function onActBack(){
@@ -421,12 +426,6 @@ J.add('touch');
                     onSuccess: function(rs) {
                         // 如果请求结果未返回，而页面已经被切换，跳出处理逻辑
                         if(v()) return;
-                        //view ppc
-                        //以后删除
-                        if(opts.pageName=="prop_view"){
-                            opts.url+=(((opts.url.indexOf('?')!=-1)?"&J=":"?J=")+ti+'-'+li);
-                            hs.replace(opts);
-                        }
                         var cssLoaded = false, jsLoaded = false, timer;
                         // 如果资源没有被加载过
                         if(!resourceLoaded){
