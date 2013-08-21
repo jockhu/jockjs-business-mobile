@@ -187,6 +187,7 @@ J.add('touch');
                 currentPageName = opts.pageName;
                 pageContainer = J.g(opts.pageName);
                 opts.boxContainer && (boxContainer = J.g(opts.boxContainer));
+                opts.boxContent && (boxContent = J.g(opts.boxContent));
                 bodyContainer = pageContainer.first();
                 pageContainer.setStyle(pageSize);
                 bodyContainer.setStyle(pageSize);
