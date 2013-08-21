@@ -427,7 +427,7 @@ J.add('touch');
                     onSuccess: function(rs) {
                         // 如果请求结果未返回，而页面已经被切换，跳出处理逻辑
                         if(v()) return;
-                        var cssLoaded = false, jsLoaded = false, timer;
+                        var cssLoaded = false, jsLoaded = false, timer, cFN;
                         // 如果资源没有被加载过
                         if(!resourceLoaded){
                             loadResource(rs.css, 'css', function(){
@@ -447,7 +447,12 @@ J.add('touch');
                                 if(cssLoaded && jsLoaded){
                                     timer && clearTimeout(timer);
                                     CL=PL=+new Date();
-                                    T.FN[opts.pageName]&&T.FN[opts.pageName]();
+
+                                    if(cFN = T.FN[opts.pageName]){
+                                        J.logger.add(T.FN); //绑定JS错误监控
+                                        cFN();
+                                    }
+
                                     opts.trackSpeedName=w.PAGENAME;
                                     trackSpeedAjax(BS,PS,CL,PL,1,opts.trackSpeedName);
                                     newPageInit();
