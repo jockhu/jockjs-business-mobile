@@ -53,12 +53,13 @@ J.add('touch');
      */
     function History(){
 
-        function pushHistory(opts){
+        function pushHistory(opts,historyPage){
             var info = {
                 title : opts.title || D.title,
                 url : opts.url,
                 pageName : opts.pageName
             };
+            if(historyPage) info.pageType='historyPage';
             if(history.pushState){
                 history.pushState(info, info.title, info.url);
             }
@@ -79,11 +80,19 @@ J.add('touch');
         w.onpopstate = function(event){
             if(J.site.info.ctid==14||J.site.info.ctid==12) return false;
             enableTransition = false;
-            var pn, currentPage, cubPage;
+            var pn, currentPage, cubPage ,hsPage;
             event.state&&(pn=event.state.pageName);
             //跳过第一次处理
             if(!isFistLoaded){
                 // 清除正在加载资源任务
+                if(pn && T.PAGES[pn] && (hsPage=T.PAGES[pn].gethistoryPage()) && pn==currentPageName){
+                    if(event.state.pageType){
+                        hsPage.onLoad && hsPage.onLoad();
+                    }else{
+                        hsPage.onBack && hsPage.onBack();
+                    }
+                    return false;
+                }
                 if(pn && pn != currentPageName && T.PAGES[pn]){
                     currentPage = T.PAGES[pn];
                     //console.log('---',currentPage.getOptions(), ops.pageName, currentPage.getSubPage(),'---')
@@ -150,7 +159,8 @@ J.add('touch');
             subPage,
             iScrollObj = null,
             pageLocked = false,
-            containerID = ('TW_' + Math.random()).replace(/\./,'')+(++identityIndex);
+            containerID = ('TW_' + Math.random()).replace(/\./,'')+(++identityIndex),
+            historyPage = null;
 
         var M = {
             isLocked:isLocked,
@@ -173,7 +183,9 @@ J.add('touch');
             getBodyContainer:getBodyContainer,
             setContent:setContent,
             resetContent:resetContent,
-            remove:remove
+            remove:remove,
+            addHistory:addHistory,
+            gethistoryPage:gethistoryPage
         };
 
         (function(){
@@ -588,8 +600,58 @@ J.add('touch');
                 });
             }
         }
+        /**
+         * 给PAGE添加一条历史记录
+         * options{onInit:初始化时,onLoad:载入时,onBack:后退时}
+         * return{back:触发后退,remove:删除历史记录}
+         */
+        function addHistory(options){
+            if(isSupported()){
+                hs.push(opts,true);
+                if(historyPage){
+                    historyPage.onLoad && historyPage.onLoad();
+                }else{
+                    options.onInit && options.onInit();
+                    historyPage = options;
+                    historyPage.onLoad && historyPage.onLoad();
+                    var back=function(){
+                        history.back();
+                    }
+                    return {
+                        back : back,
+                        remove : remove
+                    }
+                }
+            }else{
+                function b(e){
+                    back();
+                    return false;
+                }
+                w.addEventListener('beforeunload',b);
+                var back=function(){
+                    options.onBack && options.onBack();
+                    w.removeEventListener('beforeunload',b);
+                }
+                if(historyPage){
+                    historyPage.onLoad && historyPage.onLoad();
+                }else{
+                    options.onInit && options.onInit();
+                    historyPage = options;
+                    historyPage.onLoad && historyPage.onLoad();
+                    return {
+                        back : back,
+                        remove : remove
+                    }
+                }
+            }
+            function remove(){
+                historyPage = null;
+            }
+        }
 
-
+        function gethistoryPage(){
+            return historyPage;
+        }
 
         return M;
 
