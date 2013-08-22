@@ -26,7 +26,7 @@ J.add('touch');
         isFistLoaded = true,
         currentPageName = '',
         resource = {},
-        isSupportHistory = false,
+        isSupportHistory = false, logger = J.logger,
         enableTransition = true;
 
     var prefixes = (function(){
@@ -665,20 +665,23 @@ J.add('touch');
             page.addItemClick(pageElm || page.getPageContainer() , iOpts.clickItems);
         }
 
-        if(page = T.PAGES[iOpts.pageName]){
-            page.init = initialize;
-        }else{
-            iOpts.title = D.title;
-            var opts = J.mix(defOptions, iOpts, true);
-            opts.resourceLoaded = true;
-            hs.replace(opts);
-            page = T.PAGES[iOpts.pageName] = new Page(opts, stepHistory, overLocked);
-            onPageResize(function(size){
-                T.PAGES[currentPageName].resetSize(size);
-            });
-            initialize(page);
+        try{
+            if(page = T.PAGES[iOpts.pageName]){
+                page.init = initialize;
+            }else{
+                iOpts.title = D.title;
+                var opts = J.mix(defOptions, iOpts, true);
+                opts.resourceLoaded = true;
+                hs.replace(opts);
+                page = T.PAGES[iOpts.pageName] = new Page(opts, stepHistory, overLocked);
+                onPageResize(function(size){
+                    T.PAGES[currentPageName].resetSize(size);
+                });
+                initialize(page);
+            }
+        }catch(ex){
+            logger.log(ex)
         }
-
     }
 
     function preLoadWhenLoaded() {
@@ -731,15 +734,20 @@ J.add('touch');
         var opts = J.mix(defOptions, options || {}, true),
             page;
 
-        if(page = T.PAGES[opts.pageName]){
-            if(opts.type != 'box')
-                page.getScroll().scrollTo(0, 0, 200);
-            page.setOptions(opts);
-            page.show(stepHistory, overLocked);
-        }else{
-            page = new Page(opts, stepHistory, overLocked);
-            T.PAGES[opts.pageName] = page;
+        try{
+            if(page = T.PAGES[opts.pageName]){
+                if(opts.type != 'box')
+                    page.getScroll().scrollTo(0, 0, 200);
+                page.setOptions(opts);
+                page.show(stepHistory, overLocked);
+            }else{
+                page = new Page(opts, stepHistory, overLocked);
+                T.PAGES[opts.pageName] = page;
+            }
+        }catch(ex){
+            logger.log(ex)
         }
+
     }
 
 
@@ -961,5 +969,4 @@ J.add('touch');
 
     w.T = T;
 
-
-})(window);
+})(J.W);
