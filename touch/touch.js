@@ -90,6 +90,9 @@ J.add('touch');
                         hsPage.onLoad && hsPage.onLoad();
                     }else{
                         hsPage.onBack && hsPage.onBack();
+                        if(hsPage.afterBack) {
+                            hsPage.afterBack();
+                        }
                     }
                     return false;
                 }
@@ -611,8 +614,13 @@ J.add('touch');
             }
             if(history.pushState){
                 historyPage = options;
-                var back=function(){
+                var back=function(callback){
                     history.back();
+                    if(callback){
+                        historyPage.afterBack=callback;
+                    }else{
+                        historyPage.afterBack=null;
+                    }
                 }
                 var go=function(){
                     hs.push(opts,true);
