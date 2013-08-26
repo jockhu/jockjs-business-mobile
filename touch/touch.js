@@ -606,46 +606,42 @@ J.add('touch');
          * return{back:触发后退,remove:删除历史记录}
          */
         function addHistory(options){
-            if(isSupported()){
-                hs.push(opts,true);
-                if(historyPage){
+            function remove(){
+                historyPage = null;
+            }
+            if(history.pushState){
+                historyPage = options;
+                var back=function(){
+                    history.back();
+                }
+                var go=function(){
+                    hs.push(opts,true);
                     historyPage.onLoad && historyPage.onLoad();
-                }else{
-                    options.onInit && options.onInit();
-                    historyPage = options;
-                    historyPage.onLoad && historyPage.onLoad();
-                    var back=function(){
-                        history.back();
-                    }
-                    return {
-                        back : back,
-                        remove : remove
-                    }
+                }
+                return {
+                    go : go,
+                    back : back,
+                    remove : remove
                 }
             }else{
                 function b(e){
                     back();
                     return false;
                 }
-                w.addEventListener('beforeunload',b);
                 var back=function(){
                     options.onBack && options.onBack();
                     w.removeEventListener('beforeunload',b);
                 }
-                if(historyPage){
+                var go=function(){
+                    w.addEventListener('beforeunload',b);
                     historyPage.onLoad && historyPage.onLoad();
-                }else{
-                    options.onInit && options.onInit();
-                    historyPage = options;
-                    historyPage.onLoad && historyPage.onLoad();
-                    return {
-                        back : back,
-                        remove : remove
-                    }
                 }
-            }
-            function remove(){
-                historyPage = null;
+                historyPage = options;
+                return {
+                    go : go,
+                    back : back,
+                    remove : remove
+                }
             }
         }
 
