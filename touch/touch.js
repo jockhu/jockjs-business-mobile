@@ -947,7 +947,13 @@ J.add('touch');
                 }
             };
         };
-        o.iScroll.options.lazyOnpos = lazyOnpos;
+        var a;
+        if(a=o.iScroll.options.lazyOnpos){
+            a.push(lazyOnpos);
+            o.iScroll.options.lazyOnpos = a;
+        }else{
+            o.iScroll.options.lazyOnpos = [lazyOnpos];
+        }
         this.reflesh();
     }
 

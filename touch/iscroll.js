@@ -171,8 +171,12 @@ iScroll.prototype = {
 		this.y = y;
 
 		if (this.options.onPos) this.options.onPos.call(this);
-
-		if (this.options.lazyOnpos) this.options.lazyOnpos.call(this);
+		var f;
+		if (f=this.options.lazyOnpos) {
+			for (var i = f.length - 1; i >= 0; i--) {
+				f[i].call(this);
+			};
+		}
 	},
 
 	_start: function (e) {
