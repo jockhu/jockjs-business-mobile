@@ -636,8 +636,9 @@ J.add('touch');
                     back();
                     return false;
                 }
-                var back=function(){
+                var back=function(callback){
                     options.onBack && options.onBack();
+                    callback && callback();
                     w.removeEventListener('beforeunload',b);
                 }
                 var go=function(){
