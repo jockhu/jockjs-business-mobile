@@ -843,7 +843,9 @@ J.add('touch');
     }
 
     function isSupported(){
-        return isSupportHistory && history.pushState;
+       // alert(J.site.info.ctid);
+        if(J.site.info.ctid==14) return false;
+        return  isSupportHistory && history.pushState;
     }
 
     function goTo(url){
