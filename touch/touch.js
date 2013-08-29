@@ -612,7 +612,7 @@ J.add('touch');
             function remove(){
                 historyPage = null;
             }
-            if(history.pushState){
+            if(history.pushState&&(J.site.info.ctid!=14&&J.site.info.ctid!=12)){
                 historyPage = options;
                 var back=function(callback){
                     history.back();
