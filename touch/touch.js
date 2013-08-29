@@ -77,6 +77,7 @@ J.add('touch');
         }
 
         w.onpopstate = function(event){
+            if(J.site.info.ctid==14) return false;
             enableTransition = false;
             var pn, currentPage, cubPage;
             event.state&&(pn=event.state.pageName);
@@ -843,7 +844,7 @@ J.add('touch');
     }
 
     function isSupported(){
-       // alert(J.site.info.ctid);
+       // alert(J.site.info.ctid); hanhui
         if(J.site.info.ctid==14) return false;
         return  isSupportHistory && history.pushState;
     }
