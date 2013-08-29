@@ -53,12 +53,13 @@ J.add('touch');
      */
     function History(){
 
-        function pushHistory(opts){
+        function pushHistory(opts,historyPage){
             var info = {
                 title : opts.title || D.title,
                 url : opts.url,
                 pageName : opts.pageName
             };
+            if(historyPage) info.pageType='historyPage';
             if(history.pushState){
                 history.pushState(info, info.title, info.url);
             }
@@ -79,11 +80,22 @@ J.add('touch');
         w.onpopstate = function(event){
             if(J.site.info.ctid==14||J.site.info.ctid==12) return false;
             enableTransition = false;
-            var pn, currentPage, cubPage;
+            var pn, currentPage, cubPage ,hsPage;
             event.state&&(pn=event.state.pageName);
             //跳过第一次处理
             if(!isFistLoaded){
                 // 清除正在加载资源任务
+                if(pn && T.PAGES[pn] && (hsPage=T.PAGES[pn].gethistoryPage()) && pn==currentPageName){
+                    if(event.state.pageType){
+                        hsPage.onLoad && hsPage.onLoad();
+                    }else{
+                        hsPage.onBack && hsPage.onBack();
+                        if(hsPage.afterBack) {
+                            hsPage.afterBack();
+                        }
+                    }
+                    return false;
+                }
                 if(pn && pn != currentPageName && T.PAGES[pn]){
                     currentPage = T.PAGES[pn];
                     //console.log('---',currentPage.getOptions(), ops.pageName, currentPage.getSubPage(),'---')
@@ -150,7 +162,8 @@ J.add('touch');
             subPage,
             iScrollObj = null,
             pageLocked = false,
-            containerID = ('TW_' + Math.random()).replace(/\./,'')+(++identityIndex);
+            containerID = ('TW_' + Math.random()).replace(/\./,'')+(++identityIndex),
+            historyPage = null;
 
         var M = {
             isLocked:isLocked,
@@ -173,7 +186,9 @@ J.add('touch');
             getBodyContainer:getBodyContainer,
             setContent:setContent,
             resetContent:resetContent,
-            remove:remove
+            remove:remove,
+            addHistory:addHistory,
+            gethistoryPage:gethistoryPage
         };
 
         (function(){
@@ -588,8 +603,60 @@ J.add('touch');
                 });
             }
         }
+        /**
+         * 给PAGE添加一条历史记录
+         * options{onInit:初始化时,onLoad:载入时,onBack:后退时}
+         * return{back:触发后退,remove:删除历史记录}
+         */
+        function addHistory(options){
+            function remove(){
+                historyPage = null;
+            }
+            if(history.pushState&&(J.site.info.ctid!=14&&J.site.info.ctid!=12)){
+                historyPage = options;
+                var back=function(callback){
+                    history.back();
+                    if(callback){
+                        historyPage.afterBack=callback;
+                    }else{
+                        historyPage.afterBack=null;
+                    }
+                }
+                var go=function(){
+                    hs.push(opts,true);
+                    historyPage.onLoad && historyPage.onLoad();
+                }
+                return {
+                    go : go,
+                    back : back,
+                    remove : remove
+                }
+            }else{
+                function b(e){
+                    back();
+                    return false;
+                }
+                var back=function(callback){
+                    options.onBack && options.onBack();
+                    callback && callback();
+                    w.removeEventListener('beforeunload',b);
+                }
+                var go=function(){
+                    w.addEventListener('beforeunload',b);
+                    historyPage.onLoad && historyPage.onLoad();
+                }
+                historyPage = options;
+                return {
+                    go : go,
+                    back : back,
+                    remove : remove
+                }
+            }
+        }
 
-
+        function gethistoryPage(){
+            return historyPage;
+        }
 
         return M;
 
