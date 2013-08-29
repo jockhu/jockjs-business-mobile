@@ -612,7 +612,7 @@ J.add('touch');
             function remove(){
                 historyPage = null;
             }
-            if(isSupported()){
+            if(history.pushState){
                 historyPage = options;
                 var back=function(callback){
                     history.back();
