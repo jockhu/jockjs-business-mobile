@@ -110,14 +110,14 @@ function Swipe(container, options) {
 
     if (options.continuous) slide(index-1);
     else if (index) slide(index-1);
-
+    replaceImg(index);
   }
 
   function next() {
 
     if (options.continuous) slide(index+1);
     else if (index < slides.length - 1) slide(index+1);
-
+    replaceImg(index);
   }
 
   function circle(index) {
