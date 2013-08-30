@@ -168,6 +168,7 @@ function Swipe(container, options) {
 
     index = to;
     offloadFn(options.callback && options.callback(index, slides[index]));
+    replaceImg(index);
   }
 
   function move(index, dist, speed) {
