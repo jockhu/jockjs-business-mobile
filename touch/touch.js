@@ -280,6 +280,7 @@ J.add('touch');
                 boxHeader.s('.ac_b').each(function(i, v){
                     v.on('click', function(e){
                         e.stop();
+                        T.trackEvent('track_back_'+opts.pageName);
                         history.back();
                     });
                 });
