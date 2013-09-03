@@ -906,8 +906,8 @@ J.add('touch');
         T.referrer = D.location.href;
     }
 
-    function trackEvent(page, customparam){
-        J.site.eventTracking({site : 'm_anjuke-npv', page : page, customparam : customparam, href: D.location.href});
+    function trackEvent(page, customparam, href, referrer){
+        J.site.eventTracking({site : 'm_anjuke-npv', page : page, customparam : customparam, href: href || D.location.href, referrer:referrer});
     }
 
     function isSupported(){
