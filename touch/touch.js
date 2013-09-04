@@ -741,8 +741,8 @@ J.add('touch');
                 iOpts.title = D.title;
                 var opts = J.mix(defOptions, iOpts, true);
                 opts.resourceLoaded = true;
-                hs.replace(opts);
                 page = T.PAGES[iOpts.pageName] = new Page(opts, stepHistory, overLocked);
+                hs.replace(opts);
                 onPageResize(function(size){
                     T.PAGES[currentPageName].resetSize(size);
                 });
