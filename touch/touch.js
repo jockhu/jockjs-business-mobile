@@ -1044,6 +1044,42 @@ J.add('touch');
         showPage:showPage
     });
 
+    J.ready(function(){
+        var per = w.performance || {},Timing = per.timing,
+            redirectTime,domainLookupTime,connectTime,requestTime,responseTime,domParsingTime,
+            resourcesLoadedTime,domContentLoadedTime,windowLoadedTime,navigation,url;
+
+        if(Timing){
+            navigation = per.navigation;
+            redirectTime = Timing.redirectEnd - Timing.redirectStart;
+            domainLookupTime = Timing.domainLookupEnd - Timing.domainLookupStart;
+            connectTime = Timing.connectEnd - Timing.connectStart;
+            requestTime = Timing.responseStart - Timing.requestStart;
+            responseTime = Timing.responseEnd - Timing.responseStart;
+            domParsingTime = Timing.domInteractive - Timing.domLoading;
+            resourcesLoadedTime = Timing.loadEventStart - Timing.domLoading;
+            domContentLoadedTime = Timing.domContentLoadedEventStart - Timing.fetchStart;
+            windowLoadedTime = Timing.loadEventStart - Timing.fetchStart;
+            url = '?tp=timing';
+            url += '&pn='+ w.PAGENAME;
+            url += '&in='+ J.site.info.isNew;
+//            url += '&navigationType=' + navigation.navigationType;
+//            url += '&isCache=' + navigation.isCache;
+//            url += '&redirectCount=' + navigation.redirectCount;
+            url += '&redirectTime='+ redirectTime;
+            url += '&domainLookupTime='+ domainLookupTime;
+            url += '&connectTime='+ connectTime;
+            url += '&requestTime='+ requestTime;
+            url += '&responseTime='+ responseTime;
+            url += '&domParsingTime='+ domParsingTime;
+            url += '&resourcesLoadedTime='+ resourcesLoadedTime;
+            url += '&domContentLoadedTime='+ domContentLoadedTime;
+            url += '&windowLoadedTime='+ windowLoadedTime;
+            trackTs(url);
+        }
+
+    });
+
     w.T = T;
 
 })(J.W);
