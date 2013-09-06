@@ -1044,7 +1044,7 @@ J.add('touch');
         showPage:showPage
     });
 
-    J.ready(function(){
+    w.addEventListener && w.addEventListener('load',function(){
         var per = w.performance || {},Timing = per.timing,
             redirectTime,domainLookupTime,connectTime,requestTime,responseTime,domParsingTime,
             resourcesLoadedTime,domContentLoadedTime,windowLoadedTime,navigation,url;
