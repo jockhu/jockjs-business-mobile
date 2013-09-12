@@ -797,7 +797,10 @@ J.add('touch');
         // if(!overLocked){
         //     if(T.locked) return false;
         // }
-
+        if(!isSupported()) {
+            goTo(options.url);
+            return;
+        }
         options.parent = currentPageName;
 
         var opts = J.mix(defOptions, options || {}, true),
