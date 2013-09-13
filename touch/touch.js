@@ -906,12 +906,12 @@ J.add('touch');
     }
 
     function track(page, customparam){
-        J.site.eventTracking({site : 'm_anjuke', page : page, customparam:customparam, referrer : T.referrer, href: D.location.href });
+        J.logger.trackEvent({site : 'm_anjuke', page : page, customparam:customparam, referrer : T.referrer, href: D.location.href });
         T.referrer = D.location.href;
     }
 
     function trackEvent(page, customparam, href, referrer){
-        J.site.eventTracking({site : 'm_anjuke-npv', page : page, customparam : customparam, href: href || D.location.href, referrer:referrer});
+        J.logger.trackEvent({site : 'm_anjuke-npv', page : page, customparam : customparam, href: href || D.location.href, referrer:referrer});
     }
 
     function isSupported(){
@@ -934,7 +934,7 @@ J.add('touch');
         w.addEventListener && w.addEventListener('load',function(){
             var tm = J.times,url;
             url = '?pn='+ w.PAGENAME;
-            url += '&in='+ J.site.info.isNew;
+            url += '&in='+ J.iN;
             url += '&PS='+ tm.PS;
             url += '&BS='+ tm.BS;
             url += '&CL='+ tm.CL;
@@ -947,7 +947,7 @@ J.add('touch');
     function trackSpeedAjax(BS,PS,CL,PL,as,pn){
         var url;
         url = '?pn='+ pn;
-        url += '&in='+ J.site.info.isNew;
+        url += '&in='+ J.iN;
         url += '&PS='+ PS;
         url += '&BS='+ BS;
         url += '&CL='+ CL;
@@ -1065,7 +1065,7 @@ J.add('touch');
             windowLoadedTime = Timing.loadEventStart - Timing.fetchStart;
             url = '?tp=timing';
             url += '&pn='+ w.PAGENAME;
-            url += '&in='+ J.site.info.isNew;
+            url += '&in='+ J.iN;
 //            url += '&navigationType=' + navigation.navigationType;
 //            url += '&isCache=' + navigation.isCache;
 //            url += '&redirectCount=' + navigation.redirectCount;
