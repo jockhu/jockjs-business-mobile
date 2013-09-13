@@ -13,6 +13,7 @@
 /// require('utils.uuid');
 
 (function (J) {
+    J.iN = 0;
     var site = J.site, D = J.D,
         expire = 365 * 5,
         location = D.location,
