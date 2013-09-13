@@ -24,7 +24,6 @@
         createGuid = J.utils.uuid;
 
     site.info = {
-        isNew:0,
         baseDomain:baseDomain,
         host:host,
         href:href,
@@ -42,7 +41,7 @@
         var cks = site.cookies, ckGuid = cks.guid, ckCity = cks.ctid, ckSession = cks.ssid, cityId = p.city_id || '',
             setCookie = J.setCookie, getCookie = J.getCookie;
 
-        getCookie(ckGuid) || (site.info.isNew = 1, setCookie(ckGuid, createGuid(), expire, baseDomain));
+        getCookie(ckGuid) || (J.iN = 1, setCookie(ckGuid, createGuid(), expire, baseDomain));
         getCookie(ckSession) || setCookie(ckSession, createGuid(), 0, baseDomain);
         (cityId && (cityId != getCookie(ckCity))) && setCookie(ckCity, cityId, expire, baseDomain);
 
