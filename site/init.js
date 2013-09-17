@@ -24,6 +24,7 @@
         baseDomain = domain ? domain[0] : host,
         createGuid = J.utils.uuid;
 
+    site.createGuid = createGuid;
     site.info = {
         baseDomain:baseDomain,
         host:host,
