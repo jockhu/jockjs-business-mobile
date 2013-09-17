@@ -32,6 +32,8 @@
         dev:isDev
     };
 
+    site.createGuid = createGuid;
+
     site.cookies = {
         ctid:'ctid',
         guid:'aQQ_ajkguid',
