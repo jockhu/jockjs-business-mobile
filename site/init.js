@@ -19,12 +19,10 @@
         location = D.location,
         host = location.host,
         href = location.href,
-        isDev = /\.(dev\.|test)/.test(host),
-        domain = host.match(/\w+\.\w+$/),
-        baseDomain = domain ? domain[0] : host,
+        isDev = /dev|test/.test(href),
+        baseDomain = 'anjuke.com',
         createGuid = J.utils.uuid;
 
-    site.createGuid = createGuid;
     site.info = {
         baseDomain:baseDomain,
         host:host,
