@@ -33,12 +33,6 @@
 
     site.createGuid = createGuid;
 
-    site.cookies = {
-        ctid:'ctid',
-        guid:'aQQ_ajkguid',
-        ssid:'sessid'
-    };
-
     site.init = function(p){
         p = p || {};
         var cks = site.cookies, ckGuid = cks.guid, ckCity = cks.ctid, ckSession = cks.ssid, cityId = p.city_id || '',
@@ -52,5 +46,21 @@
         p.cityAlias && (site.info.cityAlias = p.cityAlias);
         p.includePrefix && (site.info.includePrefix = p.includePrefix);
 
+        var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page');
+
+        if(pageName){
+            site.tracked = true;
+            J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1"}'});
+        }
+
+        // patch for ui.favorit
+        J.ui = {favorit : {}};
+
+    };
+
+    site.cookies = {
+        ctid:'ctid',
+        guid:'aQQ_ajkguid',
+        ssid:'sessid'
     };
 })(J);
