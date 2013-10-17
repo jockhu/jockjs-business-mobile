@@ -54,7 +54,7 @@
         }
 
         // patch for ui.favorit
-        J.ui = {favorit : {}};
+        // J.ui = {favorit : {}};
 
     };
 
