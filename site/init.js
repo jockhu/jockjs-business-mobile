@@ -22,7 +22,8 @@
         isDev = /dev|test/.test(href),
         domain = host.match(/\w+\.\w+$/),
         baseDomain = domain ? domain[0] : 'anjuke.com',
-        createGuid = J.utils.uuid;
+        createGuid = J.utils.uuid,
+        setCookie = J.setCookie, getCookie = J.getCookie;
 
     site.info = {
         baseDomain:baseDomain,
@@ -35,8 +36,7 @@
 
     site.init = function(p){
         p = p || {};
-        var cks = site.cookies, ckGuid = cks.guid, ckCity = cks.ctid, ckSession = cks.ssid, cityId = p.city_id || '',
-            setCookie = J.setCookie, getCookie = J.getCookie;
+        var cks = site.cookies, ckGuid = cks.guid, ckCity = cks.ctid, ckSession = cks.ssid, cityId = p.city_id || '';
 
         getCookie(ckGuid) || (J.iN = 1, setCookie(ckGuid, createGuid(), expire, baseDomain));
         getCookie(ckSession) || setCookie(ckSession, createGuid(), 0, baseDomain);
@@ -53,10 +53,25 @@
             J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1"}'});
         }
 
-        // patch for ui.favorit
-        // J.ui = {favorit : {}};
+        //J.logger.setBackList(['da','baiduboxapphomepagetag'])
+
+        site.setRef();
 
     };
+
+    /**
+     * 为刷新版本返回记录当前的Herf，供历史返回后用作soj referrer
+     */
+    site.setRef = function(url){
+        setCookie('Ref',url||href,expire,baseDomain);
+    }
+
+    /**
+     * 获取 referrer
+     */
+    site.getRef = function(){
+        return getCookie('Ref')
+    }
 
     // 重写 onError 增加自定义错误监听
     J.logger.onError = function(message){
