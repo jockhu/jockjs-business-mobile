@@ -26,6 +26,7 @@
         setCookie = J.setCookie, getCookie = J.getCookie;
 
     site.info = {
+        pageName:'',
         baseDomain:baseDomain,
         host:host,
         href:href,
@@ -50,6 +51,7 @@
 
         if(pageName){
             site.tracked = true;
+            site.info.pageName = pageName;
             (new Image()).src = datappc;
             J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'"}'});
         }
