@@ -47,13 +47,17 @@
         p.cityAlias && (site.info.cityAlias = p.cityAlias);
         p.includePrefix && (site.info.includePrefix = p.includePrefix);
 
-        var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc");
+        var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc"),browsemode=head.getAttribute("data-mode");
 
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
             pageppc && ((new Image()).src = pageppc);
-            J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'"}'});
+            if (browsemode!="no") {
+                J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","mode":"'+browsemode+'"}'});
+            } else {
+                J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'"}'});
+            }
         }
         site.setRef();
 
