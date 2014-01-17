@@ -59,7 +59,15 @@
             } else if (rent_new=="new") {
                 J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","new":"1"}'});
             } else {
-                J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'"}'});
+                if (pageName=="Xinfang_Loupan_View") {
+                    var mode = J.getCookie("browse_mode");
+                    if (!mode) {
+                        mode = 1;
+                    }
+                    J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","mode":"'+mode+'"}'});
+                } else {
+                    J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'"}'});
+                }
             }
         }
         site.setRef();
