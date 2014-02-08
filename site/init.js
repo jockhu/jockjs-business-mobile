@@ -48,6 +48,7 @@
         p.includePrefix && (site.info.includePrefix = p.includePrefix);
 
         var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc"),browsemode=head.getAttribute("data-mode");
+        var isopener = head.getAttribute('data-opener');
         var rent_new = head.getAttribute('data-flow');
 
         if(pageName){
@@ -59,7 +60,7 @@
             } else if (rent_new=="new") {
                 J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","new":"1"}'});
             } else {
-                if (pageName=="Xinfang_Loupan_View") {
+                if (pageName=="Xinfang_Loupan_View"&&isopener=='2') {
                     var mode = J.getCookie("browse_mode");
                     if (!mode) {
                         mode = 1;
