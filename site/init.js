@@ -50,7 +50,7 @@
         var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc"),browsemode=head.getAttribute("data-mode");
         var isopener = head.getAttribute('data-opener');
         var rent_new = head.getAttribute('data-flow'),reffer=window.document.referrer;//reffertest 增加测试参数，判断soj发送时是否有ref
-        var random = head.getAttribute('data-random'), flow_list = head.getAttribute('data-flow-list');
+        var random = head.getAttribute('data-random'), flow_list = head.getAttribute('data-flow-list'), style = head.getAttribute('data-style');
 
         if(pageName){
             site.tracked = true;
