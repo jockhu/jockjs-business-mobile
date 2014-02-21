@@ -55,41 +55,25 @@
             site.tracked = true;
             site.info.pageName = pageName;
             pageppc && ((new Image()).src = pageppc);
-            if (browsemode!="no") {  //楼盘列表页测试
-                if(reffer!=''){
-                    J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","mode":"'+browsemode+'"}'});
-                }else{
-                    J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","mode":"'+browsemode+'","reffertest":"'+reffer+'"}'});
-                }
-
-            } else if (rent_new=="new") { //好组单页ab test
-                if(reffer!=''){
-                    J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","new":"1"}'});
-                }else{
-                    J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","new":"1","reffertest":"'+reffer+'"}'});
-                }
-
-            } else {
-                if (pageName=="Xinfang_Loupan_View"&&isopener=='2') {  //楼盘单页测试
-                    var mode = J.getCookie("browse_mode");
-                    if (!mode) {
-                        mode = 1;
-                    }
-                    if(reffer!=''){
-                        J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","mode":"'+mode+'"}'});
-                    }else{
-                        J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","mode":"'+mode+'","reffertest":"'+reffer+'"}'});
-                    }
-
-                } else {
-                    if(reffer!=''){
-                        J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'"}'});
-                    }else{
-                        J.logger.trackEvent({site:'m_anjuke', page:pageName, customparam: '{"refresh":"1","TH":"1","testflag":"'+testflag+'","reffertest":"'+reffer+'"}'});
-                    }
-
-                }
+            var soj = {site:'m_anjuke', page:pageName};
+            var customparam = {"refresh":"1","TH":"1","testflag":testflag};
+            if (reffer=='') {
+                customparam.reffertest = reffer;
             }
+
+            if (browsemode!="no") {  //楼盘列表页测试
+                customparam.mode = browsemode;
+            } else if (rent_new=="new") { //好组单页ab test
+                customparam.new = '1';
+            } else if (pageName=="Xinfang_Loupan_View"&&isopener=='2') {  //楼盘单页测试
+                var mode = J.getCookie("browse_mode");
+                if (!mode) {
+                    mode = 1;
+                }
+                customparam.mode = mode;
+            }
+            soj.customparam = JSON.stringify(customparam);
+            J.logger.trackEvent(soj);
         }
         site.setRef();
 
