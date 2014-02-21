@@ -76,8 +76,11 @@
             if (random!="0") { //app下载条soj
                 customparam.random = random;
             }
-            if (flow_list!="old") {
+            if (flow_list!="old") { //新版列表页筛选soj
                 customparam.flow_list = "new";
+            }
+            if (style!="") { //付费用户页面soj
+                customparam.style = style;
             }
 
             soj.customparam = JSON.stringify(customparam);
