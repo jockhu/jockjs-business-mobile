@@ -49,7 +49,7 @@
 
         var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc"),browsemode=head.getAttribute("data-mode");
         var isopener = head.getAttribute('data-opener');
-        var rent_new = head.getAttribute('data-flow'),reffer=window.document.referrer;//reffertest 增加测试参数，判断soj发送时是否有ref
+        var rent_new = head.getAttribute('data-flow');
         var random = head.getAttribute('data-random'), flow_list = head.getAttribute('data-flow-list');
 
         if(pageName){
@@ -58,9 +58,9 @@
             pageppc && ((new Image()).src = pageppc);
             var soj = {site:'m_anjuke', page:pageName};
             var customparam = {"refresh":"1","TH":"1","testflag":testflag};
-            if (reffer=='') {
+            /*if (reffer=='') {
                 customparam.reffertest = reffer;
-            }
+            }*/
 
             if (browsemode!="no") {  //楼盘列表页测试
                 customparam.mode = browsemode;
