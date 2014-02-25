@@ -73,9 +73,6 @@
                 }
                 customparam.mode = mode;
             }
-            if (random!="0") { //app下载条soj
-                customparam.random = random;
-            }
             if (flow_list!="old") {
                 customparam.flow_list = "new";
             }
