@@ -50,7 +50,7 @@
         var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc"),browsemode=head.getAttribute("data-mode");
         var isopener = head.getAttribute('data-opener');
         var rent_new = head.getAttribute('data-flow');
-        var random = head.getAttribute('data-random'), flow_list = head.getAttribute('data-flow-list');
+        var flow_list = head.getAttribute('data-flow-list'), style = head.getAttribute('data-style');
 
         if(pageName){
             site.tracked = true;
@@ -73,8 +73,13 @@
                 }
                 customparam.mode = mode;
             }
-            if (flow_list!="old") {
+
+            if (flow_list!="old") { //新版列表页筛选soj
                 customparam.flow_list = "new";
+            }
+
+            if (style!="") { //付费用户页面soj
+                customparam.style = style;
             }
 
             soj.customparam = JSON.stringify(customparam);
