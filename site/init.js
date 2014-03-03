@@ -82,6 +82,11 @@
                 customparam.style = style;
             }
 
+            var url = location.href;
+            if ((url.indexOf("lat")!=-1)&&(url.indexOf("lng")!=-1)&&(url.indexOf("map")==-1)) {
+                customparam.locate = "locate";
+            }
+
             soj.customparam = JSON.stringify(customparam);
             J.logger.trackEvent(soj);
         }
