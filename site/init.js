@@ -49,7 +49,7 @@
 
         var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc"),browsemode=head.getAttribute("data-mode");
         var isopener = head.getAttribute('data-opener');
-        var rent_new = head.getAttribute('data-flow');
+        var rent_new = head.getAttribute('data-flow'), random = head.getAttribute('data-random');
         var flow_list = head.getAttribute('data-flow-list'), style = head.getAttribute('data-style');
 
         if(pageName){
@@ -80,6 +80,10 @@
 
             if (style!="") { //付费用户页面soj
                 customparam.style = style;
+            }
+
+            if (random=="1") { //app下载条soj
+                customparam.test = "Anjuke_Prop_List_03_04_b";
             }
 
             var url = location.href;
