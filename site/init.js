@@ -65,7 +65,7 @@
             if (browsemode!="no") {  //楼盘列表页测试
                 customparam.mode = browsemode;
             } else if (rent_new=="new") { //好组单页ab test
-                customparam.new = '1';
+                customparam.test = 'b';
             } else if (pageName=="Xinfang_Loupan_View"&&isopener=='2') {  //楼盘单页测试
                 var mode = J.getCookie("browse_mode");
                 if (!mode) {
