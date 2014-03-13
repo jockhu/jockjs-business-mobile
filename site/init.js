@@ -52,6 +52,7 @@
         var rent_new = head.getAttribute('data-flow'), random = head.getAttribute('data-random');
         var flow_list = head.getAttribute('data-flow-list'), style = head.getAttribute('data-style');
         var soj_random = head.getAttribute('data-sojrandom');
+        var rent_search = head.getAttribute('kw');
 
         if(pageName){
             site.tracked = true;
@@ -89,6 +90,10 @@
 
             if (soj_random=="1") { //新盘回拨样式abtest
                 customparam.test = pageName+"_0314_b";
+            }
+
+            if (rent_search!="") { //好租列表页搜索
+                customparam.rent_search = rent_search;
             }
 
             var url = location.href;
