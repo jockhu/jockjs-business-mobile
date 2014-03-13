@@ -82,8 +82,8 @@
                 customparam.style = style;
             }
 
-            if (random=="1") { //app下载条soj
-                customparam.test = "Anjuke_Prop_List_03_04_b";
+            if (random=="1") { //列表页abtest 测试导航
+                customparam.test = pageName+"_0313_b";
             }
 
             var url = location.href;
