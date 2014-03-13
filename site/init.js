@@ -52,7 +52,7 @@
         var rent_new = head.getAttribute('data-flow'), random = head.getAttribute('data-random');
         var flow_list = head.getAttribute('data-flow-list'), style = head.getAttribute('data-style');
         var soj_random = head.getAttribute('data-sojrandom');
-        var rent_search = head.getAttribute('kw');
+        var rent_search = head.getAttribute('data-kw');
 
         if(pageName){
             site.tracked = true;
@@ -93,7 +93,7 @@
             }
 
             if (rent_search!="") { //好租列表页搜索
-                customparam.rent_search = rent_search;
+                customparam.kw = rent_search;
             }
 
             var url = location.href;
