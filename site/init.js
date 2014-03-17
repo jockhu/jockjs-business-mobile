@@ -51,6 +51,7 @@
         var isopener = head.getAttribute('data-opener');
         var rent_new = head.getAttribute('data-flow'), random = head.getAttribute('data-random');
         var flow_list = head.getAttribute('data-flow-list'), style = head.getAttribute('data-style');
+        var soj_random = head.getAttribute('data-sojrandom');
 
         if(pageName){
             site.tracked = true;
@@ -84,6 +85,10 @@
 
             if (random=="1") { //列表页abtest 测试导航
                 customparam.test = pageName+"_0313_b";
+            }
+
+            if (soj_random=="1") { //新盘回拨样式abtest
+                customparam.test = pageName+"_0314_b";
             }
 
             var url = location.href;
