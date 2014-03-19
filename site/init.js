@@ -65,22 +65,27 @@
             var customparam = {"refresh":"1","TH":"1","testflag":testflag};
    alert(rent_new);
             //好租单页abtest   房源属性标签
-            if (rent_new=="new") { //好组单页ab test
-                alert("n");
-                customparam.test = pageName+'_0319_b';
-            }else{
-                customparam.test = pageName+'_0319_a';
+            if(pageName=='Rent_View'){
+                if (rent_new==="new") { //好组单页ab test
+                    customparam.test = pageName+'_0319_b';
+                }else if(rent_new=='old'){
+                    customparam.test = pageName+'_0319_a';
+                }
             }
+            
 
             if (style!="") { //付费用户页面soj
                 customparam.style = style;
             }
 
-            if (soj_random=="1") { //新盘回拨样式abtest
-                customparam.test = pageName+"_0319_b";
-            }else{
-                customparam.test = pageName+"_0319_a";
+            if(pageName=='Xinfang_Loupan_View'){
+               if (soj_random=="1") { //新盘回拨样式abtest
+                    customparam.test = pageName+"_0319_b";
+                }else if(soj_random=="0"){
+                    customparam.test = pageName+"_0319_a";
+                } 
             }
+            
 
             //notest
             if (rent_search!="") { //好租列表页搜索
@@ -88,10 +93,12 @@
             }
           
             //二手房标签测试
-            if (tagrandom1=="1") { 
-                customparam.test = pageName+"_0319_b";
-            }else{
-                customparam.test = pageName+"_0319_a";
+            if(pageName=='Anjuke_Prop_List' || pageName=='Anjuke_Prop_View'){
+                if (tagrandom1=="1") { 
+                    customparam.test = pageName+"_0319_b";
+                }else if(tagrandom1=="0"){
+                    customparam.test = pageName+"_0319_a";
+                }
             }
             
 
