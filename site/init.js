@@ -47,22 +47,25 @@
         p.cityAlias && (site.info.cityAlias = p.cityAlias);
         p.includePrefix && (site.info.includePrefix = p.includePrefix);
 
-        var head = D.head || D.getElementsByTagName( "head" )[0], pageName = head.getAttribute('data-page'),testflag=head.getAttribute("data-testflag"),pageppc=head.getAttribute("data-ppc"),
-        // browsemode=head.getAttribute("data-mode");
-        // var isopener = head.getAttribute('data-opener');
-          rent_new = head.getAttribute('data-flow'),
-            random = head.getAttribute('data-random'),
-            flow_list = head.getAttribute('data-flow-list'), 
-            style = head.getAttribute('data-style');
-        var soj_random = head.getAttribute('data-sojrandom');
-        var rent_search = head.getAttribute('data-kw');
-        var tagrandom1 = head.getAttribute("tagrandom");
+        var head = D.head || D.getElementsByTagName( "head" )[0], 
+            pageName = head.getAttribute('data-page'),
+            testflag=head.getAttribute("data-testflag"),
+            pageppc=head.getAttribute("data-ppc"),
+            rent_new = head.getAttribute('data-flow'),
+            style = head.getAttribute('data-style'),
+            soj_random = head.getAttribute('data-sojrandom'),
+            rent_search = head.getAttribute('data-kw'),
+            tagrandom1 = head.getAttribute("tagrandom");
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
+
+            //ppc扣费 不可删除
             pageppc && ((new Image()).src = pageppc);
+
             var soj = {site:'m_anjuke', page:pageName};
             var customparam = {"refresh":"1","TH":"1","testflag":testflag};
+
             //好租单页abtest   房源属性标签
             if(pageName=='Rent_View'){
                 if (rent_new==="new") { //好组单页ab test
@@ -72,11 +75,7 @@
                 }
             }
             
-
-            if (style!="") { //付费用户页面soj
-                customparam.style = style;
-            }
-
+            //楼盘单页 
             if(pageName=='Xinfang_Loupan_View'){
                if (soj_random=="1") { //新盘回拨样式abtest
                     customparam.test = pageName+"_0319_b";
@@ -84,9 +83,14 @@
                     customparam.test = pageName+"_0319_a";
                 } 
             }
-            
 
-            //notest
+            
+            //楼盘付费用户页面soj
+            if (style!="") {
+                customparam.style = style;
+            }
+            
+            //好租列表页联想词
             if (rent_search!="") { //好租列表页搜索
                 customparam.kw = rent_search;
             }
