@@ -63,7 +63,6 @@
             pageppc && ((new Image()).src = pageppc);
             var soj = {site:'m_anjuke', page:pageName};
             var customparam = {"refresh":"1","TH":"1","testflag":testflag};
-   alert(rent_new);
             //好租单页abtest   房源属性标签
             if(pageName=='Rent_View'){
                 if (rent_new==="new") { //好组单页ab test
