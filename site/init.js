@@ -55,7 +55,8 @@
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
-            tagrandom1 = head.getAttribute("tagrandom");
+            tagrandom1 = head.getAttribute("tagrandom"),
+            list_header = head.getAttribute("data-header");
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
@@ -102,6 +103,11 @@
                 }else if(tagrandom1=="0"){
                     customparam.test = pageName+"_0319_a";
                 }
+            }
+
+            if (list_header) {
+                var ab = list_header=="0"?"a":"b";
+                customparam.test1 = pageName + "_0324_" + ab;
             }
             
 
