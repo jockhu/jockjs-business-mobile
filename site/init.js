@@ -105,7 +105,7 @@
                 }
             }
 
-            if (list_header) {
+            if (list_header&&list_header!="") {
                 var ab = list_header=="0"?"a":"b";
                 customparam.test1 = pageName + "_0324_" + ab;
             }
