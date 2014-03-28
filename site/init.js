@@ -56,7 +56,6 @@
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
             tagrandom1 = head.getAttribute("tagrandom"),
-            list_header = head.getAttribute("data-header"),
             send_msg = head.getAttribute("data-msg");
         if(pageName){
             site.tracked = true;
@@ -104,12 +103,6 @@
                 }else if(tagrandom1=="0"){
                     customparam.test = pageName+"_0319_a";
                 }
-            }
-
-            //列表页头部tab式样abtest
-            if (list_header&&list_header!="") {
-                var ab = list_header=="0"?"a":"b";
-                customparam.test1 = pageName + "_0324_" + ab;
             }
 
             //二手房单页android发短信abtest
