@@ -51,7 +51,6 @@
             pageName = head.getAttribute('data-page'),
             testflag=head.getAttribute("data-testflag"),
             pageppc=head.getAttribute("data-ppc"),
-            rent_new = head.getAttribute('data-flow'),
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
@@ -66,15 +65,6 @@
 
             var soj = {site:'m_anjuke', page:pageName};
             var customparam = {"refresh":"1","TH":"1","testflag":testflag};
-
-            //好租单页abtest   房源属性标签
-            if(pageName=='Rent_View'){
-                if (rent_new==="new") { //好组单页ab test
-                    customparam.test = pageName+'_0319_b';
-                }else if(rent_new=='old'){
-                    customparam.test = pageName+'_0319_a';
-                }
-            }
             
             //楼盘单页 
             if(pageName=='Xinfang_Loupan_View'){
@@ -85,7 +75,6 @@
                 } 
             }
 
-            
             //楼盘付费用户页面soj
             if (style!="") {
                 customparam.style = style;
