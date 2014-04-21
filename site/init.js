@@ -55,7 +55,8 @@
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
             tagrandom1 = head.getAttribute("tagrandom"),
-            send_msg = head.getAttribute("data-msg");
+            send_msg = head.getAttribute("data-msg"),
+            sale_php = head.getAttribute("data-soj-php");
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
@@ -98,6 +99,11 @@
             if (send_msg&&send_msg!="") {
                 var ab = send_msg=="0"?"a":"b";
                 customparam.test1 = pageName + "_0327" + ab;
+            }
+
+            //二手房单页php abtest
+            if (sale_php) {
+                customparam.test2 = sale_php;
             }
             
 
