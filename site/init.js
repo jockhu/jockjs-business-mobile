@@ -54,7 +54,6 @@
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
-            tagrandom1 = head.getAttribute("tagrandom"),
             send_msg = head.getAttribute("data-msg"),
             sale_php = head.getAttribute("data-soj-php");
         if(pageName){
@@ -86,14 +85,7 @@
                 customparam.kw = rent_search;
             }
           
-            //二手房标签测试
-            if(pageName=='Anjuke_Prop_List' || pageName=='Anjuke_Prop_View'){
-                if (tagrandom1=="1") { 
-                    customparam.test = pageName+"_0319_b";
-                }else if(tagrandom1=="0"){
-                    customparam.test = pageName+"_0319_a";
-                }
-            }
+
 
             //二手房单页android发短信abtest
             if (send_msg&&send_msg!="") {
@@ -105,8 +97,6 @@
             if (sale_php) {
                 customparam.test2 = sale_php;
             }
-            
-
             var url = location.href;
             if ((url.indexOf("lat")!=-1)&&(url.indexOf("lng")!=-1)&&(url.indexOf("map")==-1)) {
                 customparam.locate = "locate";
