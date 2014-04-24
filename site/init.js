@@ -84,8 +84,6 @@
             if (rent_search!="") { //好租列表页搜索
                 customparam.kw = rent_search;
             }
-          
-
 
             //二手房单页android发短信abtest
             if (send_msg&&send_msg!="") {
@@ -95,7 +93,7 @@
 
             //二手房单页php abtest
             if (sale_php) {
-                customparam.test2 = sale_php;
+                customparam.test = sale_php;
             }
             var url = location.href;
             if ((url.indexOf("lat")!=-1)&&(url.indexOf("lng")!=-1)&&(url.indexOf("map")==-1)) {
