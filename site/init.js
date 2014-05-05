@@ -49,7 +49,6 @@
 
         var head = D.head || D.getElementsByTagName( "head" )[0], 
             pageName = head.getAttribute('data-page'),
-            testflag=head.getAttribute("data-testflag"),
             pageppc=head.getAttribute("data-ppc"),
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
@@ -64,7 +63,7 @@
             pageppc && ((new Image()).src = pageppc);
 
             var soj = {site:'m_anjuke', page:pageName};
-            var customparam = {"refresh":"1","TH":"1","testflag":testflag};
+            var customparam = {};
             
             //楼盘单页 
             if(pageName=='Xinfang_Loupan_View'){
@@ -74,27 +73,15 @@
                     customparam.test = pageName+"_0319_a";
                 } 
             }
-
             //楼盘付费用户页面soj
             if (style!="") {
                 customparam.style = style;
             }
-            
             //好租列表页联想词
             if (rent_search!="") { //好租列表页搜索
                 customparam.kw = rent_search;
             }
-
-            //二手房单页android发短信abtest
-            if (send_msg&&send_msg!="") {
-                var ab = send_msg=="0"?"a":"b";
-                customparam.test1 = pageName + "_0327" + ab;
-            }
-
-            //二手房单页php abtest
-            if (sale_php) {
-                customparam.test = sale_php;
-            }
+            //定位成功进入列表页
             var url = location.href;
             if ((url.indexOf("lat")!=-1)&&(url.indexOf("lng")!=-1)&&(url.indexOf("map")==-1)) {
                 customparam.locate = "locate";
