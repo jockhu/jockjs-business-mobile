@@ -52,9 +52,7 @@
             pageppc=head.getAttribute("data-ppc"),
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
-            rent_search = head.getAttribute('data-kw'),
-            send_msg = head.getAttribute("data-msg"),
-            sale_php = head.getAttribute("data-soj-php");
+            rent_search = head.getAttribute('data-kw');
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
