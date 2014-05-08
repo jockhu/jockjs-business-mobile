@@ -52,7 +52,8 @@
             pageppc=head.getAttribute("data-ppc"),
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
-            rent_search = head.getAttribute('data-kw');
+            rent_search = head.getAttribute('data-kw'),
+            sale_php = head.getAttribute("data-soj-php");
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
@@ -78,6 +79,10 @@
             //好租列表页联想词
             if (rent_search!="") { //好租列表页搜索
                 customparam.kw = rent_search;
+            }
+            //二手房单页php abtest
+            if (sale_php) {
+                customparam.test = sale_php;
             }
             //定位成功进入列表页
             var url = location.href;
