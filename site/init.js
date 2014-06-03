@@ -53,7 +53,8 @@
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
-            sale_php = head.getAttribute("data-soj-php");
+            sale_php = head.getAttribute("data-soj-php"),
+            comm_random = head.getAttribute("data-comm");
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
@@ -89,6 +90,11 @@
             if ((url.indexOf("lat")!=-1)&&(url.indexOf("lng")!=-1)&&(url.indexOf("map")==-1)) {
                 customparam.locate = "locate";
             }
+            //小区单页推荐abtest
+            if (comm_random!="") {
+                customparam.test = "test_" + pageName + "_0528_a" + comm_random;
+            }
+
             soj.customparam = JSON.stringify(customparam);
             J.logger.trackEvent(soj);
         }
