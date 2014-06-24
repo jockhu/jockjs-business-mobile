@@ -70,7 +70,7 @@
             if(pageName=='Anjuke_Home'){
                 if (esfHome=="1") { //
                     customparam.test = 'test_'+pageName+"_0623_a1";
-                }else if(soj_random=="0"){
+                }else if(esfHome=="0"){
                     customparam.test = 'test_'+pageName+"_0623_a0";
                 }
             }
