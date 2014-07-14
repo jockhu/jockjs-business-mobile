@@ -42,7 +42,8 @@
             changed:false,
             nearby:6     //默认是6个月
         }, opts,ele,ctx,width,height,max,min,dataAvg,name,pointArr,btns,AXIS={};//X轴
-
+        var timer=null;
+        var DATA=null;
         (function () {
             opts = J.mix(defs, options || {}, true);
             var args= J.mix(opts.data,{nearby:opts.nearby});//默认6个月
@@ -67,6 +68,7 @@
             ctx.translate(0, height);
         }
 
+
         function bindEvent(){
             if(opts.ymdBox&& D.getElementById(opts.ymdBox)){
                 btns=D.getElementById(opts.ymdBox).children;
@@ -86,6 +88,12 @@
                     return false;
                 });
             }
+            window.addEventListener("resize",function(){
+                clearTimeout(timer);
+                timer=setTimeout(function(){
+                    getData();
+                },100);
+            })
         }
 
         function changeYmd(node,len){
@@ -96,20 +104,24 @@
         }
 
         function getData(args){
-            J.get({
-                url:opts.url,
-                type: "json",
-                data:args,
-                timeout:15000,
-                onSuccess:function(res){
-                   if(res.status=="ok"){
-                        opts.callback&&opts.callback();
-                        var data=initData(res);
-                        drawLine(data);
-                   }
-                },
-                onFailure:function(res){}
-            });
+            if(args){
+                J.get({
+                    url:opts.url,
+                    type: "json",
+                    data:args,
+                    timeout:15000,
+                    onSuccess:function(res){
+                       if(res.status=="ok"){
+                            opts.callback&&opts.callback();
+                            DATA=initData(res);
+                            drawLine(DATA);
+                       }
+                    },
+                    onFailure:function(res){}
+                })
+            }else{
+                drawLine(DATA);
+            }
         }
 
         function drawLine(data) {
@@ -175,10 +187,10 @@
                         var value = ((min + Math.round(dataAvg/3) * (i==0 ? -1 : (i-1))) / 10000).toFixed(3);
                         if (value < 0) value = 0;
                         if(i==0 && value==0){ //默认补充0的时候 不再显示
-                            ctx.fillText("", width + 25, -height/5 * i);
+                            ctx.fillText("", width + 30, -height/5 * i);
                         }else{
                             if(value==0){value=parseInt(value)} //0.000 => 0
-                            ctx.fillText(value + "万", width + 25, -height/5 * i);
+                            ctx.fillText(value + "万", width + 30, -height/5 * i);
                         }
                         ctx.stroke();
                     }
