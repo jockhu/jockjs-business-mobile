@@ -54,7 +54,7 @@
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
             sale_php = head.getAttribute("data-soj-php"),
-            esfHome=head.getAttribute("esfHome");
+            appVersion=head.getAttribute("app-version");
         if(pageName){
             site.tracked = true;
             site.info.pageName = pageName;
@@ -66,15 +66,13 @@
 
             var soj = {site:'m_anjuke', page:pageName};
             var customparam = {};
-            //二手房首页改版样式
-            if(pageName=='Anjuke_Home'){
-                if (esfHome=="1") { //
-                    customparam.test = 'test_'+pageName+"_0623_a1";
-                }else if(esfHome=="0"){
-                    customparam.test = 'test_'+pageName+"_0623_a0";
-                }
+            //app增强测试 1弹层3秒
+            if (appVersion=="1") {
+                customparam.test = 'test_'+pageName+"_0721_a1";
+            }else if(appVersion=="0"){
+                customparam.test = 'test_'+pageName+"_0721_a0";
             }
-            //楼盘单页 
+            //楼盘单页
             if(pageName=='Xinfang_Loupan_View'){
                if (soj_random=="1") { //新盘回拨样式abtest
                     customparam.test = pageName+"_0319_b";
