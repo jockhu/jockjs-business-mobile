@@ -33,9 +33,64 @@
         dev:isDev
     };
 
+    /**
+     * Get domain
+     * @param string url.
+     *  e.g.: shanghai.anjuke.com or shanghai.yourname.dev.anjuke.com
+     * @return string domain. e.g.: anjuke.com or anjuke.test.
+     */
+    function getDomain(url) {
+        return url.match(/\w+.(com|com.cn|cn|org|net|test)$/g)[0];
+    }
+
+    /**
+     * Get host name.
+     * @return string hostname.
+     *  e.g.: shanghai.anjuke.com or shanghai.yourname.dev.anjuke.com
+     */
+    function getHostname() {
+        var hostname = '';
+        // referrer e.g.: http://www.example.com/refer.html or http://www.example.com/
+        var referrer = document.referrer;
+        try{
+            // e.g.: shanghai.anjuke.com
+            hostname = window.top.location.hostname;
+        }catch(e){
+            // e.g.: www.example.com
+            hostname = referrer.match(/([0-9a-zA-Z.]+)/g)[1];
+        }
+        return hostname;
+    }
+
+    /**
+     * Check environment. If unavailable,
+     * redirect to anjuke site.
+     * then, return true.
+     */
+    function checkEnvAvailable() {
+        // Pre-defined white lists(1st level host).
+        var whiteList = ['anjuke.com', 'anjuke.test', '2345.com', 'rising.cn', 'hao123.com'];
+
+        return new RegExp(getDomain(getHostname())).test(whiteList.join(','));
+    }
+
+    function getRedirectUrl() {
+        return ('anjuke.com' === getDomain(self.location.hostname)) ? self.location.href : 'http://m.anjuke.com/';
+    }
+
+
+
+
+
     site.createGuid = createGuid;
 
     site.init = function(p){
+        // check environment before init.
+        if (! checkEnvAvailable()) {
+            window.top.location.href = getRedirectUrl();
+            return false;
+        }
+
         p = p || {};
         var cks = site.cookies, ckGuid = cks.guid, ckCity = cks.ctid, ckSession = cks.ssid, cityId = p.city_id || '';
 
