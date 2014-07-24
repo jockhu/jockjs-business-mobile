@@ -112,7 +112,7 @@
                     timeout:15000,
                     onSuccess:function(res){
                        if(res.status=="ok"){
-                            opts.callback&&opts.callback();
+                            opts.callback&&opts.callback(res);
                             DATA=initData(res);
                             drawLine(DATA);
                        }
