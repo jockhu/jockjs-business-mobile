@@ -33,7 +33,7 @@
         dev:isDev
     };
 
-    /**
+    /**begin
      * Get domain
      * @param string url.
      *  e.g.: shanghai.anjuke.com or shanghai.yourname.dev.anjuke.com
@@ -77,7 +77,7 @@
     function getRedirectUrl() {
         return ('anjuke.com' === getDomain(self.location.hostname)) ? self.location.href : 'http://m.anjuke.com/';
     }
-
+    //end
 
 
 
