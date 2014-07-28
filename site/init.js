@@ -90,7 +90,6 @@
             window.top.location.href = getRedirectUrl();
             return false;
         }
-
         p = p || {};
         var cks = site.cookies, ckGuid = cks.guid, ckCity = cks.ctid, ckSession = cks.ssid, cityId = p.city_id || '';
 
@@ -114,10 +113,13 @@
             site.tracked = true;
             site.info.pageName = pageName;
 
-
+            var userid='';  //房东点击自己的房源不再收费
+            if(J.getCookie("ajk_member_id")){
+                userid='&userid='+J.getCookie("ajk_member_id");
+            }
 
             //ppc扣费 不可删除
-            pageppc && ((new Image()).src = pageppc);
+            pageppc && ((new Image()).src = pageppc+userid);
 
             var soj = {site:'m_anjuke', page:pageName};
             var customparam = {};
