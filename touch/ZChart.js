@@ -50,6 +50,7 @@
         showTip = J.g(opts.showTip)||null;
         var args= J.mix(opts.data,{nearby:opts.data.nearby||defs.nearby});//?commid=100&nearby=6
         ele=D.getElementById(opts.ele);
+        if(!ele){return}
         ctx=ele.getContext("2d");
         init();
         getData(args);
@@ -111,7 +112,6 @@
                 bgX(dlen,space);
                 opts.price && addOnImg();
             }
-
             for(var i=0;i<dlen;i++){
                 var px=space*(i+0.5);
                 var py=scalePrice(e[i],height,mainData.min,mainData.avg);
@@ -123,14 +123,19 @@
             circle(dlen,points,lineColor,data,eventPosition);
 
             function addOnImg(){
+
+                var ww=null;
+                var hh=null;
                 if(!image){
                     image = new Image();
                     image.src = opts.src;
                     image.onload = function(){
-                        propPrice(dlen-1,image,image.width,image.height);
+                            ww= image.width;
+                            hh= image.height;
+                        propPrice(dlen-1,image,ww,hh);
                     }
                 }else{
-                    propPrice(dlen-1,image,image.width,image.height);
+                    propPrice(dlen-1,image,ww,hh);
                 }
             }
             function propPrice(i,image,ww,hh){
@@ -169,6 +174,7 @@
                     if(type){
                         var args= J.mix(opts.data,{nearby:type});
                         hideMsg();
+                        changeYmd(node,len,btns)
                         getData(args);
                     }
                 }
