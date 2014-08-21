@@ -110,12 +110,12 @@
                 painted=true;
                 bgY(dlen,space);
                 bgX(dlen,space);
-                opts.price && addOnImg();
+                //opts.price && addOnImg();
+                opts.price&&propPrice(dlen-1);
             }
             for(var i=0;i<dlen;i++){
                 var px=space*(i+0.5);
                 var py=scalePrice(e[i],height,mainData.min,mainData.avg);
-
                 points.push({"x" : px,"y" : py});
             }
             //dotted(iMax,space);
@@ -123,9 +123,7 @@
             circle(dlen,points,lineColor,data,eventPosition);
 
             function addOnImg(){
-
-                var ww=null;
-                var hh=null;
+                var ww=null,hh=null;
                 if(!image){
                     image = new Image();
                     image.src = opts.src;
@@ -141,8 +139,16 @@
             function propPrice(i,image,ww,hh){
                 var py = scalePrice(opts.price,height,mainData.min,mainData.avg);
                 var px=space*(i+0.5);
-                var imagePointY=74;
-                ctx.drawImage(image, 0,hh-imagePointY, ww+1, 23, px - image.width/3, py -7, 15,15);
+                //var imagePointY=74;
+               // ctx.drawImage(image, 0,hh-imagePointY, ww+1, 23, px - image.width/3, py -7, 15,15);
+
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.fillStyle = "white";
+                ctx.strokeStyle = '#2CAE00';
+                ctx.arc(px, py, 5, 0, 2* Math.PI, false);
+                ctx.fill();
+                ctx.stroke();
             }
 
         }
