@@ -155,7 +155,7 @@
 
         if(!evented){//防止重复绑定
             evented=true;
-            showTip&&ele.addEventListener('touchstart', function(e){//一些属性需要充值掉
+            showTip.length&&ele.addEventListener('touchstart', function(e){//一些属性需要充值掉
                 painted=false;//背景线
                 pointArr=[];
                 var touchEvent = e.touches[0];
