@@ -154,7 +154,10 @@
             if ((url.indexOf("lat")!=-1)&&(url.indexOf("lng")!=-1)&&(url.indexOf("map")==-1)) {
                 customparam.locate = "locate";
             }
-
+            // 房源单页,发soj时增加datappc,以统计ppc与soj的数据差异
+            if (pageName == 'Anjuke_Prop_View') {
+                customparam.datappc = pageppc;
+            }
             soj.customparam = JSON.stringify(customparam);
             J.logger.trackEvent(soj);
         }
