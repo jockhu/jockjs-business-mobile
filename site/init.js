@@ -104,7 +104,7 @@
         var head = D.head || D.getElementsByTagName( "head" )[0], 
             pageName = head.getAttribute('data-page'),
             pageppc=head.getAttribute("data-ppc"),
-            Newppc=head.getAttribute("new-ppc"),
+            Newppc=head.getAttribute("new-ppc")?head.getAttribute("new-ppc"):"",
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
@@ -139,7 +139,8 @@
                     customparam.test = pageName+"_0319_b";
                 }else if(soj_random=="0"){
                     customparam.test = pageName+"_0319_a";
-                } 
+                }
+
             }
             //楼盘付费用户页面soj
             if (style!="") {
