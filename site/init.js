@@ -104,6 +104,7 @@
         var head = D.head || D.getElementsByTagName( "head" )[0], 
             pageName = head.getAttribute('data-page'),
             pageppc=head.getAttribute("data-ppc"),
+            Newppc=head.getAttribute("new-ppc"),
             style = head.getAttribute('data-style'),
             soj_random = head.getAttribute('data-sojrandom'),
             rent_search = head.getAttribute('data-kw'),
@@ -117,12 +118,15 @@
             if(J.getCookie("ajk_member_id")){
                 userid='&userid='+J.getCookie("ajk_member_id");
             }
-
-            //ppc扣费 不可删除
-            pageppc && ((new Image()).src = pageppc+userid);
-
             var soj = {site:'m_anjuke', page:pageName};
-            var customparam = {};
+            if(Newppc!=''){
+                var customparam =  eval("("+Newppc+")");
+            }else{
+                var customparam = {};
+                //ppc扣费 不可删除
+                pageppc && ((new Image()).src = pageppc+userid);
+            }
+
             //app增强测试 1弹层3秒
             if (appVersion=="1") {
                 customparam.test = 'test_'+pageName+"_0721_a1";
