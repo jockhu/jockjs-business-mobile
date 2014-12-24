@@ -186,7 +186,7 @@
 
     // 重写 onError 增加自定义错误监听
     J.logger.onError = function(message){
-        J.logger.isDev && alert( decodeURIComponent( (message+'').replace(/,/g,'\n') ));
+        /test/.test(host) && alert( decodeURIComponent( (message+'').replace(/,/g,'\n') ));
     }
 
     site.cookies = {
