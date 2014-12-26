@@ -162,6 +162,7 @@
             // 房源单页,发soj时增加datappc,以统计ppc与soj的数据差异
             if (pageName == 'Anjuke_Prop_View') {
                 customparam.datappc = pageppc;
+                customparam.newppc = Newppc;
             }
             soj.customparam = JSON.stringify(customparam);
             J.logger.trackEvent(soj);
